@@ -42,27 +42,30 @@
                 text = o.question,
                 name = o.user;
 
-                var o = snapshot.val();
-                o['answers'] = []
-                snapshot.ref().setWithPriority(o, o.user);
+                // var o = snapshot.val();
+                // o['answers'] = []
+                // snapshot.ref().setWithPriority(o, o.user);
             
             $('<div/>', {"class": "jumbotron"}).append($('<h2/>').text(name + " : " + text)).appendTo($('#questions'));
           });
 
-          rootRef.child('users').on('child_added', function(snap){
-            var user = snap.val();
-            user['points'] = 0;
-            snap.ref().set(user);
-          });
+          // rootRef.child('users').on('child_added', function(snap){
+          //   var user = snap.val();
+          //   user['points'] = 0;
+          //   snap.ref().set(user);
+          // });
 
-          questionsRef.startAt("facebook:1004581382900695").endAt("facebook:1004581382900695").once('value', function(snap) {
-            snap.forEach(function(child) {
-              console.log(child.name());
-              db.answerQuestion(child.name(), "mietek", 'Odpowiedź');
-            });
-          });
+          // questionsRef.startAt("CURRENT_USER").endAt("CURRENT_USER").once('value', function(snap) {
+          //   snap.forEach(function(child) {
+          //     console.log(child.name());
+          //     db.answerQuestion(child.name(), "mietek", 'Odpowiedź');
+          //   });
+          // });
 
-          db.clearNotifications("Jacek");
+          db.clearNotifications('CURRENT_USER');
+          rootRef.child('notifications').once('value', function(s){
+            s.ref().remove();
+          })
 
           var log = function(Q) {
             console.log(Q);

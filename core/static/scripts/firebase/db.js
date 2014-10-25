@@ -39,18 +39,20 @@ var db = (function() {
             query = qRef.startAt(user).endAt(user);
         }
 
-        query.once('value', function(snap) {
-            var Questions = [];
-            snap.forEach(function(elem) {
-                if (Math.random() > threshold) {
-                    var quest = elem.val();
-                    quest['id'] = elem.name();
+        // query.once('value', function(snap) {
+        //     var Questions = [];
+        //     snap.forEach(function(elem) {
+        //         if (Math.random() > threshold) {
+        //             var quest = elem.val();
+        //             quest['id'] = elem.name();
 
-                    Questions.push(quest);
-                }  
-            });
-            callback(Questions);
-        });
+        //             Questions.push(quest);
+        //         }  
+        //     });
+        //     callback(Questions);
+        // });
+
+        
     }
 
     /*
@@ -76,12 +78,12 @@ var db = (function() {
         tRef.setWithPriority({
             user: user,
             question: question,
-            answer: ''
         }, user);
     }
 
     /* 
     qId - question id (hash)
+    user - user id (string)
     answer - answer (string)
     */
     function answerQuestion(qId, user, answer) {
@@ -93,7 +95,7 @@ var db = (function() {
                 quest['answers'] = [];
 
             quest.answer = [];
-            quest.answers.push({user: user, text: answer});
+            quest.answers.push({user: user, text: answer, seen: false});
             questionRef.setWithPriority(quest, quest.user);
 
             var notifiRef = nRef.child(quest.user);
@@ -103,8 +105,23 @@ var db = (function() {
 
     function clearNotifications(user) {
         var notifiRef = nRef.child(user);
-        notifiRef.once('value', function(snap) {
-            snap.ref().remove();
+        notifiRef.once('value', function(notifSnap) {
+            notifSnap.ref().remove();
+            notifSnap.forEach(function(elem) {
+                var qid = elem.val().qid;
+                var questionRef = qRef.child(qid);
+                questionRef.once('value', function(questSnap) {
+                    var quest = questSnap.val();
+                    var answers = questSnap.child('answers').val();
+
+                    for (var i = 0; i < answers.length; i++) {
+                        // All answers are set to be seen
+                        answers[i].seen = true;
+                    }
+
+                    questionRef.update({answers: answers});
+                })
+            });
         });
     }
 
