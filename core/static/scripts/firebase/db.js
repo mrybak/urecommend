@@ -43,7 +43,7 @@ var db = (function() {
                 if (Math.random() > threshold) {
                     var quest = elem.val();
                     quest['id'] = elem.name();
-                    
+
                     Questions.push(quest);
                 }  
             });
@@ -67,10 +67,21 @@ var db = (function() {
         }, user);
     }
 
+    function answerQuestion(qId, answer) {
+        var tRef = qRef.child(qId);
+        tRef.once('value', function(snap) {
+            var quest = snap.val();
+            quest['answer'] = answer;
+
+            tRef.setWithPriority(quest, quest.user);
+        });
+    }
+
     return {
         getQuestions: getQuestions,
         getUserQuestions: getUserQuestions,
         getRandomQuestions: getRandomQuestions,
-        addQuestion: addQuestion
+        addQuestion: addQuestion,
+        answerQuestion: answerQuestion
     };
 })();

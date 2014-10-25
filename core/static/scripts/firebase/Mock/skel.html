@@ -47,7 +47,7 @@
 
           questionsRef.startAt("Jacek").endAt("Jacek").once('value', function(snap) {
             snap.forEach(function(child) {
-              console.log(child.name());
+              db.answerQuestion(child.name(), 'Odpowiedź');
             });
           });
 
