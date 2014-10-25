@@ -1,19 +1,30 @@
-var Question = function (id, user, questionText, answererId, answerText) {
-    self = this;
+var Question = function (id, user, questionText, answers) {
+    var self = this;
 
     self.id = ko.observable(id);
     self.user = ko.observable(user);
     self.questionText = ko.observable(questionText);
-    self.answerText = ko.observable(answerText);
-    self.answererId = ko.observable(answererId);
+
+    var mappedAnswers = answers.map(function (a) {
+        return new Answer(a.user, a.text, a.seen);
+    });
+    self.answers = ko.observableArray(mappedAnswers);
 
     self.isUnanswered = ko.computed(function () {
-        return answererId == ""
+        return answers.length == 0
     });
-
-    return self;
+    self.hasNewAnswers = ko.computed(function () {
+        return answers.filter(function (a) { return !a.seen }).length == 0
+    });
 };
 
+var Answer = function (user, text, seen) {
+    var self = this;
+
+    self.user = ko.observable(user);
+    self.text = ko.observable(text);
+    self.seen = ko.observable(seen);
+};
 
 function AppViewModel() {
 
@@ -42,9 +53,15 @@ function AppViewModel() {
     };
 
     self.userQuestions = ko.observableArray();
+    self.unansweredQuestionsCount = ko.computed(function () {
+        var unanswered = self.userQuestions().filter(function (q) { return q.isUnanswered() });
+        return unanswered.length;
+    });
     self.unreadNotificationsCount = ko.observable(0);
     self.questionText = ko.observable();
-    self.currentQuestion = "-J_7FO-q_x3Gh4afeXUy";
+    self.questionsToAnswer = ko.observableArray();
+    self.currentQuestion = ko.observable(-1);
+    self.questionsNumber = 0;
     self.answerText = ko.observable();
 
     self.state = ko.observable(self.states.ASK);  // default
@@ -55,14 +72,13 @@ function AppViewModel() {
         self.goToDashboard();
     };
 
-    self.goToDashboard = function () {
+    function updateQuestionsList() {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
             var mappedQuestions = fetchedQuestions.map(function (q) {
-                if (q.hasOwnProperty("answererId")) {
-                    return new Question(q.id, q.user, q.question, q.answererId, q.answerText)
-
+                if (q.hasOwnProperty("answers")) {
+                    return new Question(q.id, q.user, q.question, q.answers)
                 } else {
-                    return new Question(q.id, q.user, q.question, "", "")
+                    return new Question(q.id, q.user, q.question, [])
 
                 }
             });
@@ -70,12 +86,20 @@ function AppViewModel() {
             self.userQuestions([]);
             ko.utils.arrayPushAll(self.userQuestions, mappedQuestions);
         });
+    }
+
+    self.goToDashboard = function () {
+        updateQuestionsList();
 
         self.state(self.states.DASH);
     };
 
     self.goToNotifications = function () {
+        updateQuestionsList();
+        db.clearNotifications(self.currentUser());
+
         self.state(self.states.NOTIF_LIST);
+
     };
 
     self.goToQuestionForm = function () {
@@ -83,6 +107,21 @@ function AppViewModel() {
     };
 
     self.goToAnswerForm = function () {
+        if (self.currentQuestion() == self.questionsNumber-1) {
+            self.currentQuestion(-1);
+            self.questionsNumber = 0;
+        }
+        if (self.currentQuestion() == -1) {
+            db.getRandomQuestions(0.5, function (fetchedQuestions) {
+                var mappedQuestions = fetchedQuestions.map(function (q) {
+                    self.questionsNumber++;
+                    return new Question(q.id, q.user, q.question, [])
+                });
+                self.questionsToAnswer([]);
+                ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
+            });
+        }
+        self.currentQuestion(self.currentQuestion() + 1);
         self.state(self.states.ANS_CHOICE);
     };
 
@@ -91,7 +130,8 @@ function AppViewModel() {
     };
 
     self.sendAnswer = function () {
-        db.answerQuestion(self.currentQuestion, self.answerText());
+        db.answerQuestion(self.questionsToAnswer()[self.currentQuestion()].id(), self.currentUser(), self.answerText());
+        self.answerText("");
 
         self.state(self.states.ANS_SENT);
     };

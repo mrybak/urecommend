@@ -4,9 +4,19 @@
     this is my NOTIFIIIIIIII
 </h1>
 
+<h2 data-bind="visible: unreadNotificationsCount() > 0">
+    New answers (<span data-bind="text: unreadNotificationsCount()"></span>)
+</h2>
+<h2 data-bind="visible: unreadNotificationsCount() == 0">No new answers</h2>
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="visible: !isUnanswered()">
-        <span data-bind="text: questionText"></span>
+    <li data-bind="text: ko.toJSON($data)"></li>
+    <li data-bind="visible: !isUnanswered() && hasNewAnswers()">
+        <strong><span data-bind="text: questionText"></span></strong>
+        <ul data-bind="foreach: answers">
+            <li>
+                <span data-bind="text: user"></span>: <span data-bind="text: text"></span>
+            </li>
+        </ul>
     </li>
 </ul>
 

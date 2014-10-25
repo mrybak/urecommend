@@ -13,6 +13,11 @@
     {% endbuttons %}
 </div>
 
+<h2 data-bind="visible: unansweredQuestionsCount() > 0">
+    Your unanswered questions (<span data-bind="text: unansweredQuestionsCount()"></span>)
+</h2>
+<h2 data-bind="visible: unansweredQuestionsCount() == 0">NO unanswered QUESSSSTIONS
+</h2>
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: isUnanswered()">
         <span data-bind="text: questionText"></span>
@@ -33,4 +38,3 @@
         {% endbuttons %}
     </div>
 </form>
-
