@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% load bootstrap3 %}
 
 <!DOCTYPE html>
@@ -9,6 +10,11 @@
 
     <title>{% block title %}uRecommend{% endblock %}</title>
 
+    <link href="{% static 'styles/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{% static 'styles/cover.css' %}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{% static 'styles/common.css' %}" rel="stylesheet" type="text/css" media="screen">
+
+
     {% block custom_scripts_and_style %}{% endblock %}
 
 </head>
@@ -18,6 +24,10 @@
 
 
 {% endblock %}
+
+<script type="text/javascript" src="{% static 'scripts/jquery-1.11.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/common.js' %}"></script>
 
 </body>
 </html>
