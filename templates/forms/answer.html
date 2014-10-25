@@ -1,18 +1,19 @@
 {% load bootstrap3 %}
 
-
-<h1 class="main" data-bind="visible: state() == states.ANS_CHOICE || state() == states.ANS_INPUT ">
+<div data-bind="foreach: questionsToAnswer">
+<div data-bind="visible: $root.currentQuestion() == $index()">
+<h1 class="main" data-bind="visible: $root.state() == $root.states.ANS_CHOICE || $root.state() == $root.states.ANS_INPUT ">
     <label class="prefix">Recommend me:
-        <span id="question-body"></span>
+        <span id="question-body" data-bind="text: questionText"></span>
     </label>
 </h1>
 
-<div id="answer-form-wrapper" data-bind="visible: state() == states.ANS_INPUT">
+<div id="answer-form-wrapper" data-bind="visible: $root.state() == $root.states.ANS_INPUT">
     <form id="answer-question-form" method="post">
         {% csrf_token %}
 
         <label class="prefix">
-            I'd recommend <input type="text" name="answer" data-bind="value: answerText" class="answer-input"/>
+            I'd recommend <input type="text" name="answer" data-bind="value: $root.answerText" class="answer-input"/>
         </label>
 
         <div class="buttons">
@@ -25,25 +26,27 @@
     </form>
 </div>
 
-<div class="buttons" id="question-choice-buttons" data-bind="visible: state() == states.ANS_CHOICE">
+<div class="buttons" id="question-choice-buttons" data-bind="visible: $root.state() == $root.states.ANS_CHOICE">
     {% buttons %}
-        <button type="button" data-bind="click: showAnswerInput" class="btn btn-primary btn-i-answer">
+        <button type="button" data-bind="click: $root.showAnswerInput" class="btn btn-primary btn-i-answer">
             {% bootstrap_icon "ok-circle" %} answer
         </button>
-        <button type="button" data-bind="click: goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
+        <button type="button" data-bind="click: $root.goToAnswerForm, visible: $root.currentQuestion() < $root.questionsNumber" class="btn btn-primary btn-skip btn-with-load-indicator">
             {% bootstrap_icon "chevron-right" %} next
         </button>
     {% endbuttons %}
 </div>
 
-<div class="buttons" id="answer-thanks" data-bind="visible: state() == states.ANS_SENT">
+<div class="buttons" id="answer-thanks" data-bind="visible: $root.state() == $root.states.ANS_SENT">
     Thank you, big man. <br />
     {% buttons %}
-        <button type="button" data-bind="click: goToDashboard" class="btn btn-primary btn-i-answer">
+        <button type="button" data-bind="click: $root.goToDashboard" class="btn btn-primary btn-i-answer">
             {% bootstrap_icon "ok-circle" %} enough. go back to dashboard
         </button>
-        <button type="button" data-bind="click: goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
+        <button type="button" data-bind="click: $root.goToAnswerForm, visible: $root.currentQuestion() < $root.questionsNumber" class="btn btn-primary btn-skip btn-with-load-indicator">
             {% bootstrap_icon "chevron-right" %} next!
         </button>
     {% endbuttons %}
+</div>
+</div>
 </div>

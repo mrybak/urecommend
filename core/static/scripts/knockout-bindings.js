@@ -56,7 +56,9 @@ function AppViewModel() {
     });
     self.unreadNotificationsCount = ko.observable(0);
     self.questionText = ko.observable();
-    self.currentQuestion = "-J_7FO-q_x3Gh4afeXUy";
+    self.questionsToAnswer = ko.observableArray();
+    self.currentQuestion = ko.observable(-1);
+    self.questionsNumber = 0;
     self.answerText = ko.observable();
 
     self.state = ko.observable(self.states.ASK);  // default
@@ -100,6 +102,21 @@ function AppViewModel() {
     };
 
     self.goToAnswerForm = function () {
+        if (self.currentQuestion() == self.questionsNumber) {
+            self.currentQuestion(-1);
+            self.questionsNumber = 0;
+        }
+        if (self.currentQuestion() == -1) {
+            db.getRandomQuestions(0.5, function (fetchedQuestions) {
+                var mappedQuestions = fetchedQuestions.map(function (q) {
+                    self.questionsNumber++;
+                    return new Question(q.id, q.user, q.question, [])
+                });
+                self.questionsToAnswer([]);
+                ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
+            });
+        }
+        self.currentQuestion(self.currentQuestion() + 1);
         self.state(self.states.ANS_CHOICE);
     };
 
@@ -108,7 +125,8 @@ function AppViewModel() {
     };
 
     self.sendAnswer = function () {
-        db.answerQuestion(self.currentQuestion, self.answerText());
+        db.answerQuestion(self.questionsToAnswer()[self.currentQuestion()].id(), self.currentUser(), self.answerText());
+        self.answerText("");
 
         self.state(self.states.ANS_SENT);
     };
