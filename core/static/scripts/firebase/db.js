@@ -21,6 +21,7 @@ var db = (function() {
         return defaultProperties;
     }
 
+    // this will be private soon
     function getQuestions(callback, params) {
         params = typeof params !== 'undefined' ? params : {};
         callback = typeof callback !== 'undefined' ? callback : function() {};
@@ -51,28 +52,46 @@ var db = (function() {
         });
     }
 
+    /*
+    threshold - threshold (numeric)
+    */
     function getRandomQuestions(threshold, callback) {
         getQuestions(callback, {threshold: threshold});
     }
 
+    /*
+    user - user id (string)
+    */
     function getUserQuestions(user, callback) {
         getQuestions(callback, {user: user});
     }
 
+    /*
+    user - user id (string)
+    question - question (string)
+    */
     function addQuestion(user, question) {
         var tRef = qRef.push();
         tRef.setWithPriority({
             user: user,
-            question: question
+            question: question,
+            answer: ''
         }, user);
     }
 
-    function answerQuestion(qId, answer) {
+    /* 
+    qId - question id (hash)
+    answer - answer (string)
+    */
+    function answerQuestion(qId, user, answer) {
         var tRef = qRef.child(qId);
         tRef.once('value', function(snap) {
             var quest = snap.val();
-            quest['answer'] = answer;
 
+            if (!quest.hasOwnProperty('answer'))
+                quest['answer'] = [];
+
+            quest.answer.push({user: user, text: answer});
             tRef.setWithPriority(quest, quest.user);
         });
     }

@@ -41,13 +41,24 @@
             var o = snapshot.val(),
                 text = o.question,
                 name = o.user;
+
+                var o = snapshot.val();
+                o['answer'] = []
+                snapshot.ref().setWithPriority(o, o.user);
             
             $('<div/>', {"class": "jumbotron"}).append($('<h2/>').text(name + " : " + text)).appendTo($('#questions'));
           });
 
+          rootRef.child('users').on('child_added', function(snap){
+            var user = snap.val();
+            user['points'] = 0;
+            snap.ref().set(user);
+          });
+
           questionsRef.startAt("Jacek").endAt("Jacek").once('value', function(snap) {
             snap.forEach(function(child) {
-              db.answerQuestion(child.name(), 'Odpowiedź');
+              console.log(child.name());
+              db.answerQuestion(child.name(), "mietek", 'Odpowiedź');
             });
           });
 
