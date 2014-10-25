@@ -16,7 +16,7 @@ html {
 }
 .dashboard-container {
     min-height: 100%;
-    top: 0;
+    top: 76px;
     left: 0;
     position: absolute;
     width: 100%;

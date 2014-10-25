@@ -13,7 +13,10 @@
     {% endbuttons %}
 </div>
 
-TUTAJ LISTA PYTAŃ NP<br/><br/>
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="text: $index"></li>
+    <li data-bind="text: $data"></li>
+</ul>
 
 <h2>
     recommend someone something:
