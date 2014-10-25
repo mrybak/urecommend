@@ -2,10 +2,12 @@ var db = (function() {
     var ref = new Firebase('https://luminous-heat-6147.firebaseio.com/');
     var qRef = ref.child('questions');
 
+    var ANONYMOUS = 'anonymous';
+
     function prepareParameters(params) {
         var defaultProperties = {
-            'user': 'anonymous',
-            'threshold': 0.5
+            'user': ANONYMOUS,
+            'threshold': 0.0
         };
 
         for (var property in defaultProperties) {
@@ -27,7 +29,14 @@ var db = (function() {
         var user = params.user;
         var threshold = params.threshold;
 
-        qRef.once('value', function(snap) {
+        var query;
+        if (user === ANONYMOUS) {
+            query = qRef;
+        } else {
+            query = qRef.startAt(user).endAt(user);
+        }
+
+        query.once('value', function(snap) {
             var Questions = [];
             snap.forEach(function(elem) {
                 if (Math.random() > threshold) {
@@ -39,12 +48,12 @@ var db = (function() {
         });
     }
 
-    /* user - username string */
-    function getUserQuestions(user, callback) {
-        var query = qRef.startAt(user).endAt(user);
-        query.once('value', function(snap){
+    function getRandomQuestions(threshold, callback) {
+        getQuestions(callback, {threshold: threshold});
+    }
 
-        });
+    function getUserQuestions(user, callback) {
+        getQuestions(callback, {user: user});
     }
 
     function addQuestion(user, question) {
@@ -57,6 +66,8 @@ var db = (function() {
 
     return {
         getQuestions: getQuestions,
+        getUserQuestions: getUserQuestions,
+        getRandomQuestions: getRandomQuestions,
         addQuestion: addQuestion
     };
 })();
