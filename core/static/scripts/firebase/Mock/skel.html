@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mock view</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h3 class="text-center">Mock for db.js</h3>
+    <div id="questions" class="text-center"></div>
+    <div class="form-group text-center">
+        <div class="row">
+          <div class="col-lg-4">
+            <input type="text" id="txtUser" class="form-control">
+          </div>
+          <div class="col-lg-8">
+              <input type="text" id="txtNewQuestion" class="form-control">
+            </div>
+        </div>
+        <button id="btUpdateQuestion" class="btn btn-lg btn-primary" style="margin-top:10px">Update</button>
+      </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
+  <script src="../db.js"></script>
+  <script>
+      var questions = document.getElementById('questions'),
+          txtNewQuestion = document.getElementById('txtNewQuestion'),
+          btUpdateQuestion = document.getElementById('btUpdateQuestion'),
+          txtUser = document.getElementById('txtUser'),
+          rootRef = new Firebase('https://luminous-heat-6147.firebaseio.com'),
+          questionsRef = rootRef.child('questions');
+
+          btUpdateQuestion.addEventListener('click', function(){
+
+            questionsRef.push({user: txtUser.value, question: txtNewQuestion.value});
+            txtNewQuestion.value = "";
+          });
+
+          questionsRef.on('child_added', function(snapshot) {
+            var o = snapshot.val(),
+                text = o.question,
+                name = o.user;
+            console.log(o);
+            $('<div/>', {"class": "jumbotron"}).append($('<h2/>').text(name + " : " + text)).appendTo($('#questions'));
+          });
+    </script>  
+</body>
+</html>
