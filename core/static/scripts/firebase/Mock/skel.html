@@ -43,7 +43,7 @@
                 name = o.user;
 
                 var o = snapshot.val();
-                o['answer'] = []
+                o['answers'] = []
                 snapshot.ref().setWithPriority(o, o.user);
             
             $('<div/>', {"class": "jumbotron"}).append($('<h2/>').text(name + " : " + text)).appendTo($('#questions'));
@@ -55,12 +55,14 @@
             snap.ref().set(user);
           });
 
-          questionsRef.startAt("Jacek").endAt("Jacek").once('value', function(snap) {
+          questionsRef.startAt("facebook:1004581382900695").endAt("facebook:1004581382900695").once('value', function(snap) {
             snap.forEach(function(child) {
               console.log(child.name());
               db.answerQuestion(child.name(), "mietek", 'Odpowiedź');
             });
           });
+
+          db.clearNotifications("Jacek");
 
           var log = function(Q) {
             console.log(Q);

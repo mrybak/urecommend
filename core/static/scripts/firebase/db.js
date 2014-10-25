@@ -1,6 +1,7 @@
 var db = (function() {
     var ref = new Firebase('https://luminous-heat-6147.firebaseio.com/');
     var qRef = ref.child('questions');
+    var nRef = ref.child('notifications');
 
     var ANONYMOUS = 'anonymous';
 
@@ -84,15 +85,26 @@ var db = (function() {
     answer - answer (string)
     */
     function answerQuestion(qId, user, answer) {
-        var tRef = qRef.child(qId);
-        tRef.once('value', function(snap) {
+        var questionRef = qRef.child(qId);
+        questionRef.once('value', function(snap) {
             var quest = snap.val();
 
-            if (!quest.hasOwnProperty('answer'))
-                quest['answer'] = [];
+            if (!quest.hasOwnProperty('answers'))
+                quest['answers'] = [];
 
-            quest.answer.push({user: user, text: answer});
-            tRef.setWithPriority(quest, quest.user);
+            quest.answer = [];
+            quest.answers.push({user: user, text: answer});
+            questionRef.setWithPriority(quest, quest.user);
+
+            var notifiRef = nRef.child(quest.user);
+            notifiRef.push({user: user, qid: qId, seen: false});
+        });
+    }
+
+    function clearNotifications(user) {
+        var notifiRef = nRef.child(user);
+        notifiRef.once('value', function(snap) {
+            snap.ref().remove();
         });
     }
 
@@ -101,6 +113,7 @@ var db = (function() {
         getUserQuestions: getUserQuestions,
         getRandomQuestions: getRandomQuestions,
         addQuestion: addQuestion,
-        answerQuestion: answerQuestion
+        answerQuestion: answerQuestion,
+        clearNotifications: clearNotifications
     };
 })();
