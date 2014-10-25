@@ -39,18 +39,18 @@ var db = (function() {
             query = qRef.startAt(user).endAt(user);
         }
 
-        // query.once('value', function(snap) {
-        //     var Questions = [];
-        //     snap.forEach(function(elem) {
-        //         if (Math.random() > threshold) {
-        //             var quest = elem.val();
-        //             quest['id'] = elem.name();
+        query.once('value', function(snap) {
+            var Questions = [];
+            snap.forEach(function(elem) {
+                if (Math.random() > threshold) {
+                    var quest = elem.val();
+                    quest['id'] = elem.name();
 
-        //             Questions.push(quest);
-        //         }  
-        //     });
-        //     callback(Questions);
-        // });
+                    Questions.push(quest);
+                }  
+            });
+            callback(Questions);
+        });
 
         
     }
