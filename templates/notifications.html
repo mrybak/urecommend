@@ -5,7 +5,7 @@
 </h1>
 
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="visible: isUnanswered()">
+    <li data-bind="visible: !isUnanswered()">
         <span data-bind="text: questionText"></span>
     </li>
 </ul>

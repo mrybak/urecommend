@@ -7,7 +7,7 @@ var Question = function (id, user, questionText, answererId, answerText) {
     self.answerText = ko.observable(answerText);
     self.answererId = ko.observable(answererId);
 
-    self.isUnanswered = ko.computed(function() {
+    self.isUnanswered = ko.computed(function () {
         return answererId == ""
     });
 
@@ -21,8 +21,17 @@ function AppViewModel() {
 
     var ref = new Firebase("https://luminous-heat-6147.firebaseio.com/");
     var authData = ref.getAuth();
+    var userNotifsRef = ref.child('notifications/' + authData.uid);
 
-    /* there are following states: */
+    self.currentUser = ko.observable(authData.uid);
+
+    /* user notifications listener */
+    userNotifsRef.on('child_added', function (snapshot) {
+        self.unreadNotificationsCount(self.unreadNotificationsCount() + 1)
+    });
+
+
+    /* there are following application states: */
     self.states = {
         ASK: "ASK", /* ask a question */
         DASH: "DASHBOARD", /* main view, list of questions and answers visible */
@@ -32,9 +41,8 @@ function AppViewModel() {
         NOTIF_LIST: "NOTIFICATIONS LIST" /* displays list of new answers to questions */
     };
 
-    self.currentUser = ko.observable(authData.uid);
     self.userQuestions = ko.observableArray();
-    self.unreadNotificationsCount = ko.observable(1);
+    self.unreadNotificationsCount = ko.observable(0);
     self.questionText = ko.observable();
     self.currentQuestion = "-J_7FO-q_x3Gh4afeXUy";
     self.answerText = ko.observable();
