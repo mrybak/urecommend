@@ -8,21 +8,33 @@
 
 {% block content %}
     <div class="site-wrapper">
+        <span style="background: greenyellow; padding: 10px; font-size: 30px; position: absolute"
+              data-bind="text: state"></span>
 
         <div class="site-wrapper-inner">
+
+            <div class="buttons" data-bind="visible: state() != states.DASH">
+                {% buttons %}
+                    <button type="button" data-bind="click: goToDashboard"
+                            class="btn btn-primary btn-with-load-indicator">
+                        {% bootstrap_icon "chevron-left" %} back to dashboard
+                    </button>
+                {% endbuttons %}
+            </div>
+
 
             <div class="cover-container">
 
                 <div class="inner cover">
-                    <div class="qa-form ask">
-                        <form id="ask-question-form" method="post">
+                    <div class="qa-form ask" data-bind="visible: state() == states.ASK">
+                        <form id="ask-question-form" method="post" data-bind="submit: sendQuestion">
                             {% csrf_token %}
 
                             {% include "forms/question.html" %}
                         </form>
                     </div>
-                    <div class="qa-form answer">
-                         <form id="answer-question-form" method="post">
+                    <div class="qa-form answer" data-bind="visible: state() != states.DASH && state() != states.ASK">
+                        <form id="answer-question-form" method="post" data-bind="submit: sendAnswer">
                             {% csrf_token %}
 
                             {% include "forms/answer.html" %}
@@ -32,7 +44,7 @@
 
             </div>
 
-            <div class="dashboard-container">
+            <div class="dashboard-container" data-bind="visible: state() == states.DASH">
                 <div id="dashboard">
                     {% include "dashboard.html" %}
                 </div>

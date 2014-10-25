@@ -10,11 +10,6 @@ html {
     background: #fefefe;
 }
 
-.qa-form.answer, .dashboard-container {
-    display: none;
-}
-
-
 
 .dashboard {
     height: 100%;

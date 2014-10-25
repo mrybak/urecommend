@@ -7,7 +7,7 @@
 
 <div class="buttons">
     {% buttons %}
-        <button type="button" onclick="showQuestionForm()" class="btn btn-primary btn-with-load-indicator">
+        <button type="button" data-bind="click: goToQuestionForm" class="btn btn-primary btn-with-load-indicator">
             {% bootstrap_icon "plus" %} ask question
         </button>
     {% endbuttons %}
@@ -23,7 +23,7 @@ TUTAJ LISTA PYTAŃ NP<br/><br/>
 
     <div class="buttons">
         {% buttons %}
-            <button type="submit" class="btn btn-primary btn-i-answer">
+            <button type="submit" data-bind="click: goToAnswerForm" class="btn btn-primary btn-i-answer">
                 {% bootstrap_icon "chevron-left" %} start recommending
             </button>
         {% endbuttons %}

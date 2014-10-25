@@ -1,27 +1,49 @@
 {% load bootstrap3 %}
 
 
-<div class="buttons">
+<h1 class="main" data-bind="visible: state() == states.ANS_CHOICE || state() == states.ANS_INPUT ">
+    <label class="prefix">Recommend me:
+        <span id="question-body"></span>
+    </label>
+</h1>
+
+<div id="answer-form-wrapper" data-bind="visible: state() == states.ANS_INPUT">
+    <form id="answer-question-form" method="post">
+        {% csrf_token %}
+
+        <label class="prefix">
+            I'd recommend <input type="text" name="answer" class="answer-input"/>
+        </label>
+
+        <div class="buttons">
+            {% buttons %}
+                <button type="submit" class="btn btn-primary btn-with-load-indicator">
+                    {% bootstrap_icon "ok-circle" %} send
+                </button>
+            {% endbuttons %}
+        </div>
+    </form>
+</div>
+
+<div class="buttons" id="question-choice-buttons" data-bind="visible: state() == states.ANS_CHOICE">
     {% buttons %}
-        <button type="button" onclick="showDashboard()" class="btn btn-primary btn-with-load-indicator">
-            {% bootstrap_icon "chevron-left" %} back to dashboard
+        <button type="button" data-bind="click: showAnswerInput" class="btn btn-primary btn-i-answer">
+            {% bootstrap_icon "ok-circle" %} answer
+        </button>
+        <button type="button" data-bind="click: goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
+            {% bootstrap_icon "chevron-right" %} next
         </button>
     {% endbuttons %}
 </div>
 
-<h1 class="main">
-    <label class="prefix">Recommend me:
-        <span class="question-body">lager beer other than heineken</span>
-    </label>
-</h1>
-
-<div class="buttons">
+<div class="buttons" id="answer-thanks" data-bind="visible: state() == states.ANS_SENT">
+    Thank you, big man. <br />
     {% buttons %}
-        <button type="button" id="answer-button" class="btn btn-primary btn-i-answer">
-            {% bootstrap_icon "ok-circle" %} answer
+        <button type="button" data-bind="click: goToDashboard" class="btn btn-primary btn-i-answer">
+            {% bootstrap_icon "ok-circle" %} enough. go back to dashboard
         </button>
-        <button type="button" id="next-question-button" class="btn btn-primary btn-skip btn-with-load-indicator">
-            {% bootstrap_icon "chevron-right" %} next
+        <button type="button" data-bind="click: goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
+            {% bootstrap_icon "chevron-right" %} next!
         </button>
     {% endbuttons %}
 </div>
