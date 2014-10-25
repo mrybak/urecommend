@@ -13,6 +13,9 @@ var Question = function (id, user, questionText, answers) {
     self.isUnanswered = ko.computed(function () {
         return answers.length == 0
     });
+    self.hasNewAnswers = ko.computed(function () {
+        return answers.filter(function (a) { return !a.seen }).length == 0
+    });
 };
 
 var Answer = function (user, text, seen) {
@@ -93,8 +96,10 @@ function AppViewModel() {
 
     self.goToNotifications = function () {
         updateQuestionsList();
+        db.clearNotifications(self.currentUser());
 
         self.state(self.states.NOTIF_LIST);
+
     };
 
     self.goToQuestionForm = function () {
