@@ -14,13 +14,13 @@ $(document).ready(function () {
     $("#login-btn").click(function () {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
             if (authData) {
-                window.location.replace("/");
                 authData = prepareUser(authData);
-                
                 ref.child('users/' + authData.uid).once('value', function (snap) {
+                    console.log('x');
                     if (snap.val() === null) {
                         ref.child('users').child(authData.uid).set(authData);
                     }
+                    window.location.replace("/");
                 });
             }
         });
