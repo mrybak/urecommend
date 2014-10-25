@@ -1,3 +1,14 @@
+var Question = function (id, question, user) {
+    self = this;
+
+    self.id = ko.observable(id);
+    self.question = ko.observable(question);
+    self.user = ko.observable(user);
+
+    return self;
+};
+
+
 function AppViewModel() {
 
     var self = this;
@@ -30,8 +41,12 @@ function AppViewModel() {
 
     self.goToDashboard = function () {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
+            var mappedQuestions = fetchedQuestions.map(function (q) {
+                return new Question(q.id, q.question, q.user)
+            });
+
             self.userQuestions([]);
-            ko.utils.arrayPushAll(self.userQuestions, fetchedQuestions);
+            ko.utils.arrayPushAll(self.userQuestions, mappedQuestions);
         });
 
         self.state(self.states.DASH);
