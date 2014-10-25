@@ -13,8 +13,10 @@ var Question = function (id, user, questionText, answers) {
     self.isUnanswered = ko.computed(function () {
         return answers.length == 0
     });
-    self.hasNewAnswers = ko.computed(function () {
-        return answers.filter(function (a) { return !a.seen }).length == 0
+    self.hasUnreadAnswers = ko.computed(function () {
+        return answers.length > 0 && answers.filter(function (a) {
+            return !a.seen
+        }).length > 0
     });
 };
 
@@ -40,6 +42,9 @@ function AppViewModel() {
     userNotifsRef.on('child_added', function (snapshot) {
         self.unreadNotificationsCount(self.unreadNotificationsCount() + 1)
     });
+    userNotifsRef.on('child_removed', function (snapshot) {
+        self.unreadNotificationsCount(self.unreadNotificationsCount() - 1)
+    });
 
 
     /* there are following application states: */
@@ -54,7 +59,9 @@ function AppViewModel() {
 
     self.userQuestions = ko.observableArray();
     self.unansweredQuestionsCount = ko.computed(function () {
-        var unanswered = self.userQuestions().filter(function (q) { return q.isUnanswered() });
+        var unanswered = self.userQuestions().filter(function (q) {
+            return q.isUnanswered()
+        });
         return unanswered.length;
     });
     self.unreadNotificationsCount = ko.observable(0);
@@ -73,7 +80,7 @@ function AppViewModel() {
         self.goToDashboard();
     };
 
-    function updateQuestionsList() {
+    function updateQuestionsList(stateToProceedTo) {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
             var mappedQuestions = fetchedQuestions.map(function (q) {
                 if (q.hasOwnProperty("answers")) {
@@ -86,21 +93,20 @@ function AppViewModel() {
 
             self.userQuestions([]);
             ko.utils.arrayPushAll(self.userQuestions, mappedQuestions);
+
+            self.state(stateToProceedTo);
+            if (stateToProceedTo == self.states.NOTIF_LIST) {
+                db.clearNotifications(self.currentUser());
+            }
         });
     }
 
     self.goToDashboard = function () {
-        updateQuestionsList();
-
-        self.state(self.states.DASH);
+        updateQuestionsList(self.states.DASH);
     };
 
     self.goToNotifications = function () {
-        updateQuestionsList();
-        db.clearNotifications(self.currentUser());
-
-        self.state(self.states.NOTIF_LIST);
-
+        updateQuestionsList(self.states.NOTIF_LIST);
     };
 
     self.goToQuestionForm = function () {
@@ -108,7 +114,7 @@ function AppViewModel() {
     };
 
     self.goToAnswerForm = function () {
-        if (self.currentQuestion() == self.questionsNumber-1) {
+        if (self.currentQuestion() == self.questionsNumber - 1) {
             self.currentQuestion(-1);
             self.questionsNumber = 0;
         }
