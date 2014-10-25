@@ -17,6 +17,8 @@ function AppViewModel() {
 
     self.currentUser = ko.observable(authData.uid);
     self.questionText = ko.observable();
+    self.currentQuestion = "-J_7FO-q_x3Gh4afeXUy";
+    self.answerText = ko.observable();
 
     self.state = ko.observable(self.states.ASK);  // default
 
@@ -43,6 +45,8 @@ function AppViewModel() {
     };
 
     self.sendAnswer = function () {
+        db.answerQuestion(self.currentQuestion, self.answerText());
+
         self.state(self.states.ANS_SENT);
     };
 
