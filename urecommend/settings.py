@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'urecommend',
+    'core',
     'bootstrap3',
 )
 
@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'urecommendProject.urls'
+ROOT_URLCONF = 'urecommend.urls'
 
-WSGI_APPLICATION = 'urecommendProject.wsgi.application'
+WSGI_APPLICATION = 'urecommend.wsgi.application'
 
 
 # Database
