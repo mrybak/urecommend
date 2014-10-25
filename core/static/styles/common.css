@@ -9,6 +9,13 @@ html {
 .site-wrapper {
     background: #fefefe;
 }
+.site-wrapper.with-bg {
+    background: #ddcf00;
+}
+
+.masthead-brand:hover {
+    cursor: pointer;
+}
 
 .fullscreen {
     min-height: 100%;
