@@ -33,18 +33,26 @@
           questionsRef = rootRef.child('questions');
 
           btUpdateQuestion.addEventListener('click', function(){
-
-            questionsRef.push({user: txtUser.value, question: txtNewQuestion.value});
-            txtNewQuestion.value = "";
+            var username = txtUser.value;
+            db.addQuestion(username, txtNewQuestion.value);
           });
 
           questionsRef.on('child_added', function(snapshot) {
             var o = snapshot.val(),
                 text = o.question,
                 name = o.user;
-            console.log(o);
+            
             $('<div/>', {"class": "jumbotron"}).append($('<h2/>').text(name + " : " + text)).appendTo($('#questions'));
           });
+
+          questionsRef.startAt("Jacek").endAt("Jacek").once('value', function(snap) {
+            snap.forEach(function(child) {
+              console.log(child.name());
+            });
+          });
+
+          db.getQuestions(function(Q) { console.log(Q); });
+
     </script>  
 </body>
 </html>
