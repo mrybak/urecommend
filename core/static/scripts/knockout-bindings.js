@@ -68,6 +68,7 @@ function AppViewModel() {
 
     self.sendQuestion = function () {
         db.addQuestion(self.currentUser(), self.questionText());
+        self.questionText("");
 
         self.goToDashboard();
     };
