@@ -14,7 +14,9 @@
 </div>
 
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="text: question"></li>
+    <li data-bind="visible: isUnanswered()">
+        <span data-bind="text: questionText"></span>
+    </li>
 </ul>
 
 <h2>

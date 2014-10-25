@@ -1,9 +1,15 @@
-var Question = function (id, question, user) {
+var Question = function (id, user, questionText, answererId, answerText) {
     self = this;
 
     self.id = ko.observable(id);
-    self.question = ko.observable(question);
     self.user = ko.observable(user);
+    self.questionText = ko.observable(questionText);
+    self.answerText = ko.observable(answerText);
+    self.answererId = ko.observable(answererId);
+
+    self.isUnanswered = ko.computed(function() {
+        return answererId == ""
+    });
 
     return self;
 };
@@ -42,7 +48,13 @@ function AppViewModel() {
     self.goToDashboard = function () {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
             var mappedQuestions = fetchedQuestions.map(function (q) {
-                return new Question(q.id, q.question, q.user)
+                if (q.hasOwnProperty("answererId")) {
+                    return new Question(q.id, q.user, q.question, q.answererId, q.answerText)
+
+                } else {
+                    return new Question(q.id, q.user, q.question, "", "")
+
+                }
             });
 
             self.userQuestions([]);
