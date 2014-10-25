@@ -9,5 +9,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', core.views.IntroTemplateView.as_view(), name='intro_view'),
+    url(r'^login/$', core.views.login, name='login_view'),
 
 )

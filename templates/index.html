@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block auth_check %}
+    <script src="{% static 'scripts/firebase/auth-check.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     <div class="site-wrapper">

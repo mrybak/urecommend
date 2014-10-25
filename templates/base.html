@@ -20,6 +20,9 @@
     <link href="{% static 'styles/common.css' %}" rel="stylesheet" type="text/css" media="screen">
 
 
+    <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
+    {% block auth_check %}{% endblock %}
+
     {% block custom_scripts_and_style %}{% endblock %}
 
 </head>
@@ -32,8 +35,8 @@
 
 <script type="text/javascript" src="{% static 'scripts/jquery-1.11.1.min.js' %}"></script>
 {% bootstrap_javascript %}
-<script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
 <script type="text/javascript" src="{% static 'scripts/common.js' %}"></script>
+<script src="{% static 'scripts/firebase/auth.js' %}"></script>
 
 </body>
 </html>
