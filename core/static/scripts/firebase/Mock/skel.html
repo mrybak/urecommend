@@ -51,7 +51,11 @@
             });
           });
 
-          db.getQuestions(function(Q) { console.log(Q); });
+          var log = function(Q) {
+            console.log(Q);
+          }
+
+          db.getRandomQuestions(0.5, log);
 
     </script>  
 </body>

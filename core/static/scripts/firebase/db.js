@@ -12,8 +12,9 @@ var db = (function() {
 
         for (var property in defaultProperties) {
             if (defaultProperties.hasOwnProperty(property)) {
-                if (params.hasOwnProperty(property))
-                    defaultProperties[property] = params.property;
+                if (params.hasOwnProperty(property)) {
+                    defaultProperties[property] = params[property];
+                }
             }
         }
 
