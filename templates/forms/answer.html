@@ -31,7 +31,7 @@
         <button type="button" data-bind="click: $root.showAnswerInput" class="btn btn-primary btn-i-answer">
             {% bootstrap_icon "ok-circle" %} answer
         </button>
-        <button type="button" data-bind="click: $root.goToAnswerForm, visible: $root.currentQuestion() < $root.questionsNumber" class="btn btn-primary btn-skip btn-with-load-indicator">
+        <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
             {% bootstrap_icon "chevron-right" %} next
         </button>
     {% endbuttons %}
@@ -43,7 +43,7 @@
         <button type="button" data-bind="click: $root.goToDashboard" class="btn btn-primary btn-i-answer">
             {% bootstrap_icon "ok-circle" %} enough. go back to dashboard
         </button>
-        <button type="button" data-bind="click: $root.goToAnswerForm, visible: $root.currentQuestion() < $root.questionsNumber" class="btn btn-primary btn-skip btn-with-load-indicator">
+        <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
             {% bootstrap_icon "chevron-right" %} next!
         </button>
     {% endbuttons %}

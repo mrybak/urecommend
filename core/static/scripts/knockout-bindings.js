@@ -107,7 +107,7 @@ function AppViewModel() {
     };
 
     self.goToAnswerForm = function () {
-        if (self.currentQuestion() == self.questionsNumber) {
+        if (self.currentQuestion() == self.questionsNumber-1) {
             self.currentQuestion(-1);
             self.questionsNumber = 0;
         }
