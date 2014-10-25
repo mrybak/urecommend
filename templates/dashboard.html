@@ -1,0 +1,31 @@
+{% load bootstrap3 %}
+
+<h1 class="main">
+    this is my dahsboard
+</h1>
+
+
+<div class="buttons">
+    {% buttons %}
+        <button type="button" onclick="showQuestionForm()" class="btn btn-primary btn-with-load-indicator">
+            {% bootstrap_icon "plus" %} ask question
+        </button>
+    {% endbuttons %}
+</div>
+
+TUTAJ LISTA PYTAŃ NP<br/><br/>
+
+<h2>
+    recommend someone something:
+</h2>
+<form id="go-to-questions-list-form">
+    {% csrf_token %}
+
+    <div class="buttons">
+        {% buttons %}
+            <button type="submit" class="btn btn-primary btn-i-answer">
+                {% bootstrap_icon "chevron-left" %} start recommending
+            </button>
+        {% endbuttons %}
+    </div>
+</form>

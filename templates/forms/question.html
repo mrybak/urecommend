@@ -1,0 +1,14 @@
+{% load bootstrap3 %}
+
+<h1 class="main">
+    <label class="prefix">Recommend me:
+        <input type="text" name="question" class="question-input"/>
+    </label>
+</h1>
+<div class="buttons">
+    {% buttons %}
+        <button type="submit" class="btn btn-primary btn-with-load-indicator">
+            {% bootstrap_icon "ok-circle" %} send
+        </button>
+    {% endbuttons %}
+</div>

@@ -7,5 +7,23 @@ html {
 }
 
 .site-wrapper {
-    background: #ff67f6;
+    background: #fefefe;
+}
+
+.qa-form.answer, .dashboard-container {
+    display: none;
+}
+
+
+
+.dashboard {
+    height: 100%;
+    margin: 0 !important;
+}
+.dashboard-container {
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
 }

@@ -10,7 +10,12 @@
 
     <title>{% block title %}uRecommend{% endblock %}</title>
 
-    <link href="{% static 'styles/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
     <link href="{% static 'styles/cover.css' %}" rel="stylesheet" type="text/css" media="screen">
     <link href="{% static 'styles/common.css' %}" rel="stylesheet" type="text/css" media="screen">
 
@@ -26,7 +31,7 @@
 {% endblock %}
 
 <script type="text/javascript" src="{% static 'scripts/jquery-1.11.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'scripts/bootstrap.min.js' %}"></script>
+{% bootstrap_javascript %}
 <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
 <script type="text/javascript" src="{% static 'scripts/common.js' %}"></script>
 

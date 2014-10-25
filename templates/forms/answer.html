@@ -1,0 +1,27 @@
+{% load bootstrap3 %}
+
+
+<div class="buttons">
+    {% buttons %}
+        <button type="button" onclick="showDashboard()" class="btn btn-primary btn-with-load-indicator">
+            {% bootstrap_icon "chevron-left" %} back to dashboard
+        </button>
+    {% endbuttons %}
+</div>
+
+<h1 class="main">
+    <label class="prefix">Recommend me:
+        <span class="question-body">lager beer other than heineken</span>
+    </label>
+</h1>
+
+<div class="buttons">
+    {% buttons %}
+        <button type="button" id="answer-button" class="btn btn-primary btn-i-answer">
+            {% bootstrap_icon "ok-circle" %} answer
+        </button>
+        <button type="button" id="next-question-button" class="btn btn-primary btn-skip btn-with-load-indicator">
+            {% bootstrap_icon "chevron-right" %} next
+        </button>
+    {% endbuttons %}
+</div>
