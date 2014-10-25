@@ -6,7 +6,7 @@ $(document).ready(function () {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
             if (authData) {
                 window.location.replace("/");
-                console.log(authData.facebook.accessToken);
+                ref.child('users').child(authData.uid).set(authData);
             }
         });;
     });
