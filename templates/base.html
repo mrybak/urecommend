@@ -21,7 +21,10 @@
 
 
     <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
-    {% block auth_check %}{% endblock %}
+
+    {% block auth_check %}
+        <script src="{% static 'scripts/firebase/auth-check.js' %}"></script>
+    {% endblock %}
 
     {% block custom_scripts_and_style %}{% endblock %}
 

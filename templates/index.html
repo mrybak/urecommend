@@ -2,10 +2,6 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 
-{% block auth_check %}
-    <script src="{% static 'scripts/firebase/auth-check.js' %}"></script>
-{% endblock %}
-
 {% block content %}
     <div class="site-wrapper">
         <span style="background: greenyellow; padding: 10px; font-size: 30px; position: absolute"
@@ -24,6 +20,17 @@
 
 
             <div class="cover-container">
+
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <h3 class="masthead-brand" data-bind="click: goToDashboard">uRecommend</h3>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#" data-bind="click: goToDashboard">Home</a></li>
+                            <li><a href="#" id="logout-link">Logout</a></li>
+                            <li id="user-id"></li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="inner cover">
                     <div class="qa-form ask" data-bind="visible: state() == states.ASK">
