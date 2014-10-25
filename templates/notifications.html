@@ -1,0 +1,13 @@
+{% load bootstrap3 %}
+
+<h1 class="main">
+    this is my NOTIFIIIIIIII
+</h1>
+
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="visible: isUnanswered()">
+        <span data-bind="text: questionText"></span>
+    </li>
+</ul>
+
+

@@ -10,14 +10,32 @@ html {
     background: #fefefe;
 }
 
-.dashboard {
-    height: 100%;
-    margin: 0 !important;
-}
-.dashboard-container {
+.fullscreen {
     min-height: 100%;
     top: 76px;
     left: 0;
     position: absolute;
     width: 100%;
+}
+
+.fullscreen-inner {
+    height: 100%;
+    margin: 0 !important;
+}
+
+#notifications-link {
+    position: relative;
+}
+
+#notifications-link span {
+    position: absolute;
+    top: 6px;
+    right: -13px;
+    background: red;
+    font-size: 10px;
+    color: #fff;
+    text-align: center;
+    width: 15px;
+    height: 14px;
+    border-radius: 7px;
 }

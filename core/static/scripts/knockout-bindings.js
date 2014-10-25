@@ -28,11 +28,13 @@ function AppViewModel() {
         DASH: "DASHBOARD", /* main view, list of questions and answers visible */
         ANS_CHOICE: "ANSWER_CHOICE", /* displays random question and you decide if you answer or not */
         ANS_INPUT: "ANSWER_INPUT", /* displays form that lets you send answer to question */
-        ANS_SENT: "ANSWER_SENT" /* displays "thank you" for answering and lets you decide on how to continue */
+        ANS_SENT: "ANSWER_SENT", /* displays "thank you" for answering and lets you decide on how to continue */
+        NOTIF_LIST: "NOTIFICATIONS LIST" /* displays list of new answers to questions */
     };
 
     self.currentUser = ko.observable(authData.uid);
     self.userQuestions = ko.observableArray();
+    self.unreadNotificationsCount = ko.observable(1);
     self.questionText = ko.observable();
     self.currentQuestion = "-J_7FO-q_x3Gh4afeXUy";
     self.answerText = ko.observable();
@@ -62,6 +64,10 @@ function AppViewModel() {
         });
 
         self.state(self.states.DASH);
+    };
+
+    self.goToNotifications = function () {
+        self.state(self.states.NOTIF_LIST);
     };
 
     self.goToQuestionForm = function () {
