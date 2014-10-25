@@ -9,16 +9,6 @@
 
         <div class="site-wrapper-inner">
 
-            <div class="buttons" data-bind="visible: state() != states.DASH">
-                {% buttons %}
-                    <button type="button" data-bind="click: goToDashboard"
-                            class="btn btn-primary btn-with-load-indicator">
-                        {% bootstrap_icon "chevron-left" %} back to dashboard
-                    </button>
-                {% endbuttons %}
-            </div>
-
-
             <div class="cover-container">
 
                 <div class="masthead clearfix">
@@ -26,8 +16,10 @@
                         <h3 class="masthead-brand" data-bind="click: goToDashboard">uRecommend</h3>
                         <ul class="nav masthead-nav">
                             <li class="active"><a href="#" data-bind="click: goToDashboard">Home</a></li>
+                            <li><a href="#" data-bind="click: goToNotifications" id="notifications-link">Notifications <span
+                                    data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a></li>
                             <li><a href="#" id="logout-link">Logout</a></li>
-                            <li id="user-id"></li>
+                            <li data-bind="text: currentUser()"></li>
                         </ul>
                     </div>
                 </div>
@@ -40,7 +32,7 @@
                             {% include "forms/question.html" %}
                         </form>
                     </div>
-                    <div class="qa-form answer" data-bind="visible: state() != states.DASH && state() != states.ASK">
+                    <div class="qa-form answer" data-bind="visible: state() == states.ANS_CHOICE || state() == states.ANS_SENT || state() == states.ANS_INPUT">
                         <form id="answer-question-form" method="post" data-bind="submit: sendAnswer">
                             {% csrf_token %}
 
@@ -48,12 +40,17 @@
                         </form>
                     </div>
                 </div>
-
             </div>
 
-            <div class="dashboard-container" data-bind="visible: state() == states.DASH">
-                <div id="dashboard">
+            <div class="dashboard-container fullscreen" data-bind="visible: state() == states.DASH">
+                <div class="fullscreen-inner">
                     {% include "dashboard.html" %}
+                </div>
+            </div>
+
+            <div class="notifications-container fullscreen" data-bind="visible: state() == states.NOTIF_LIST">
+                <div class="fullscreen-inner">
+                    {% include "notifications.html" %}
                 </div>
             </div>
 

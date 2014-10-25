@@ -12,7 +12,7 @@
         {% csrf_token %}
 
         <label class="prefix">
-            I'd recommend <input type="text" name="answer" class="answer-input"/>
+            I'd recommend <input type="text" name="answer" data-bind="value: answerText" class="answer-input"/>
         </label>
 
         <div class="buttons">

@@ -13,7 +13,11 @@
     {% endbuttons %}
 </div>
 
-TUTAJ LISTA PYTAŃ NP<br/><br/>
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="visible: isUnanswered()">
+        <span data-bind="text: questionText"></span>
+    </li>
+</ul>
 
 <h2>
     recommend someone something:
@@ -29,3 +33,4 @@ TUTAJ LISTA PYTAŃ NP<br/><br/>
         {% endbuttons %}
     </div>
 </form>
+
