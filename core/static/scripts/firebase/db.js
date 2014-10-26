@@ -42,19 +42,6 @@ var db = (function() {
             query = qRef.startAt(user).endAt(user);
         }
 
-        // query.once('value', function(snap) {
-        //     var Questions = [];
-        //     snap.forEach(function(elem) {
-        //         if (Math.random() > threshold) {
-        //             var quest = elem.val();
-        //             quest['id'] = elem.name();
-
-        //             Questions.push(quest);
-        //         }  
-        //     });
-        //     callback(Questions);
-        // })
-
         query.once('value', function(snap) {
             var Questions = [],
                 QuestionsNum = snap.numChildren(),
@@ -134,6 +121,15 @@ var db = (function() {
         });
     }
 
+    /*
+    qId - question id (hash)
+    aId - answer local id (array index)
+    */
+    function acceptAnswer(qId, aId) {
+        var questionRef = qRef.child(qId);
+        questionRef.update({acceptedAnswer: aId});
+    }
+
     function clearNotifications(user) {
         var notifiRef = nRef.child(user);
         notifiRef.once('value', function(notifSnap) {
@@ -162,6 +158,7 @@ var db = (function() {
         getRandomQuestions: getRandomQuestions,
         addQuestion: addQuestion,
         answerQuestion: answerQuestion,
+        acceptAnswer: acceptAnswer,
         clearNotifications: clearNotifications
     };
 })();
