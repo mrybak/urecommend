@@ -67,14 +67,23 @@ html {
     margin-bottom: 30px;
 }
 
-.btn-primary {
+.btn-primary.home {
     background: #234431;
     font-size: 24px !important;
     border: 1px solid #fff !important;
+    font-size: 24px !important;
+}
+
+.btn-primary {
+    background: #296D46;
+    font-size: 31px !important;
+    border: 1px solid #fff !important;
+    margin: 0 10px;
+    padding: 7px 15px 10px 15px !important;
 }
 
 .btn-primary:hover, .btn-primary:focus {
-    background: #356649 !important;
+    background: #56945e !important;
 }
 
 .btn-primary .glyphicon {
@@ -98,6 +107,11 @@ html {
 .prefix {
     line-height: 50px;
     font-size: 50px;
+    margin-bottom: 30px;
+}
+
+.prefix.text-muted {
+    color: rgba(86, 82, 87, 0.30);
 }
 
 .question-input {
@@ -110,6 +124,21 @@ html {
     font-size: 44px;
 }
 
-::-webkit-input-placeholder { /* WebKit browsers */
+#question-body {
+    padding: 5px 0;
+    margin: 10px 10px 0 10px;
+    color: #356649;
+    font-size: 44px;
+}
+
+::-webkit-input-placeholder {
+    /* WebKit browsers */
     color: rgba(86, 82, 87, 0.30);
+}
+
+.btn-skip {
+    background: #9C3131;
+}
+.btn-skip:hover, .btn-skip:focus {
+    background: #c53e3e !important;
 }

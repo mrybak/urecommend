@@ -3,7 +3,7 @@
 <div data-bind="foreach: questionsToAnswer">
 <div data-bind="visible: $root.currentQuestion() == $index()">
 <h1 class="main" data-bind="visible: $root.state() == $root.states.ANS_CHOICE || $root.state() == $root.states.ANS_INPUT ">
-    <label class="prefix">Recommend me:
+    <label class="prefix text-muted">Recommend me:
         <span id="question-body" data-bind="text: questionText"></span>
     </label>
 </h1>
@@ -32,7 +32,8 @@
             {% bootstrap_icon "ok-circle" %} answer
         </button>
         <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
-            {% bootstrap_icon "chevron-right" %} next
+            next
+            {% bootstrap_icon "chevron-right" %}
         </button>
     {% endbuttons %}
 </div>
