@@ -5,7 +5,8 @@ var db = (function() {
         uRef = ref.child('users');
 
     var ANONYMOUS = 'anonymous';
-    var ALPHA_FACTOR = 20;
+    var POINTS_ALPHA_FACTOR = 20;
+    var TAGS_ALPHA_FACTOR = 1;
 
     function prepareParameters(params) {
         var defaultProperties = {
@@ -35,6 +36,19 @@ var db = (function() {
                 return true;
         }
         return false;
+    }
+
+    function matchedTags(t1, t2) {
+        // Thx to Duczi
+        if (!t1 || !t2)
+            return 0;
+
+        var matched = 0;
+        for (var i = 0; i < t1.length; i++) {
+            if (t2.indexOf(t1[i]) !== -1)
+                matched++;
+        }
+        return matched;
     }
 
     // this will be private soon
@@ -75,13 +89,20 @@ var db = (function() {
 
             snap.forEach(function(questionSnap) {
                 console.log(questionSnap.val());
-                uRef.child(questionSnap.val().user).once('value', function(userSnap) {
-                var points = userSnap.child('points').val(),
-                    factor = ALPHA_FACTOR / (points + ALPHA_FACTOR);
+                uRef.child(questionSnap.val().user).once('value', function(aUserSnap) {
+                var points = aUserSnap.child('points').val(),
+                    pointsFactor = POINTS_ALPHA_FACTOR / (points + POINTS_ALPHA_FACTOR);
+                    
+                    uRef.child(user).once('value', function(qUserSnap) {
+                        var question = questionSnap.val();
+                        question['id'] = questionSnap.name();
 
-                    var question = questionSnap.val();
-                    question['id'] = questionSnap.name();
-                    localcb(question, factor);
+                        var matched = matchedTags(user.tags, question.tags);
+                        tagsFactor = TAGS_ALPHA_FACTOR / (matched + TAGS_ALPHA_FACTOR);
+
+                        var factor = pointsFactor * tagsFactor;
+                        localcb(question, factor);
+                    });
                 });
             });
         });
@@ -151,6 +172,11 @@ var db = (function() {
                 snap.ref().update({tags: tags}, onComplete);
             }
         });
+    }
+
+    function addUserTags(user, tags, onComplete) {
+        onComplete = onComplete !== undefined ? onComplete : function() {};
+        ref.child('users/' + user).update({tags: tags}, onComplete);      
     }
 
     /*
@@ -228,6 +254,7 @@ var db = (function() {
         getAllTags: getAllTags,
         getUserTags: getUserTags,
         addUserTag: addUserTag,
+        addUserTags: addUserTags,
         addQuestion: addQuestion,
         answerQuestion: answerQuestion,
         acceptAnswer: acceptAnswer,
