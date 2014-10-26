@@ -76,11 +76,12 @@ var db = (function() {
 
 
             var localcb = function (question, factor) {
-                if (skipuser === null
-                || (question.user !== skipuser && !userAnswered(question, user)))
-                    if (Math.random() > threshold * factor) {
-                        Questions.push(question);
-                    }
+                if (!question.hasOwnProperty('acceptedAnswer'))
+                    if (question.user !== skipuser)
+                        if (!userAnswered(question, user))
+                            if (Math.random() > threshold * factor) {
+                                Questions.push(question);
+                            }
 
                 if (++i >= QuestionsNum) {
                     callback(Questions);
@@ -93,9 +94,13 @@ var db = (function() {
                 var points = aUserSnap.child('points').val(),
                     pointsFactor = POINTS_ALPHA_FACTOR / (points + POINTS_ALPHA_FACTOR);
                     
-                    uRef.child(user).once('value', function(qUserSnap) {
+                    var userref = skipuser === null ? "mock" : skipuser;
+                    uRef.child(userref).once('value', function(qUserSnap) {
                         var question = questionSnap.val();
                         question['id'] = questionSnap.name();
+
+                        var user = qUserSnap.val();
+                        user = user === null ? {} : user;
 
                         var matched = matchedTags(user.tags, question.tags);
                         tagsFactor = TAGS_ALPHA_FACTOR / (matched + TAGS_ALPHA_FACTOR);
