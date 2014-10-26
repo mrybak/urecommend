@@ -40,7 +40,7 @@ html {
 
 .fullscreen-inner {
     height: 100%;
-    width: 80%;
+    width: 950px;
     margin: 0 auto;
 }
 
@@ -109,6 +109,17 @@ html {
 .masthead-nav li a {
     font-size: 16px;
     font-weight: 300;
+    padding: 5px 10px;
+}
+
+.masthead-nav li.active a {
+    background: #4f986d;
+    color: #fff;
+    font-weight: 400;
+    border-radius: 5px;
+}
+.masthead-nav li.active a .glyphicon {
+    color: #fff !important;
 }
 
 .masthead-nav li a .glyphicon {
@@ -194,7 +205,7 @@ ul {
     font-size: 24px;
     list-style: none;
     text-align: left;
-    padding-left: 28%;
+    padding-left: 0;
 }
 
 ul li {
@@ -228,7 +239,6 @@ ul li {
     padding: 5px 0;
     width: 100%;
     display: block;
-    text-align: right;
 }
 
 .legend span {
@@ -256,4 +266,24 @@ ul li {
     cursor: default;
     color: green;
     outline: none;
+}
+
+
+.glyphicon-refresh-animate {
+    -animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+.loading-indicator {
+    display: none;
 }

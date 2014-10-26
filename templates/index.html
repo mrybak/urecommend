@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="site-wrapper">
-       {% comment %} <span style="background: greenyellow; padding: 10px; font-size: 30px; position: absolute"
+        {% comment %} <span style="background: greenyellow; padding: 10px; font-size: 30px; position: absolute"
               data-bind="text: state"></span>{% endcomment %}
 
         <div class="site-wrapper-inner">
@@ -14,10 +14,12 @@
                 <div class="masthead clearfix">
                     <h3 class="masthead-brand" data-bind="click: goToDashboard">RecommendMe</h3>
                     <ul class="nav masthead-nav">
-                        <li><a href="#" data-bind="click: goToDashboard">{% bootstrap_icon "home" %}  Dashboard</a></li>
-                        <li><a href="#" data-bind="click: goToTags">{% bootstrap_icon "tag" %}  My tags</a></li>
-                        <li><a href="#" data-bind="click: goToNotifications" id="notifications-link">{% bootstrap_icon "bell" %}  My questions
-                            <span class="notification-count" data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a>
+                        <li data-bind="css: { active: state() == states.DASH }"><a href="#" data-bind="click: goToDashboard">{% bootstrap_icon "home" %} Dashboard</a></li>
+                        <li data-bind="css: { active: state() == states.TAGS }"><a href="#" data-bind="click: goToTags">{% bootstrap_icon "tag" %} My tags</a></li>
+                        <li data-bind="css: { active: state() == states.NOTIF_LIST }"><a href="#" data-bind="click: goToNotifications"
+                               id="notifications-link">{% bootstrap_icon "bell" %} My questions
+                            <span class="notification-count"
+                                  data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a>
                         </li>
                         <li><a href="#" id="logout-link">{% bootstrap_icon "off" %} Logout</a></li>
                     </ul>
@@ -56,11 +58,11 @@
 
             <div class="tags-container fullscreen" data-bind="visible: state() == states.TAGS">
                 <div class="fullscreen-inner">
-                        <form id="add-tag-form" method="post" data-bind="submit: sendTag">
-                            {% csrf_token %}
+                    <form id="add-tag-form" method="post" data-bind="submit: sendTag">
+                        {% csrf_token %}
 
-                            {% include "forms/tag.html" %}
-                        </form>
+                        {% include "forms/tag.html" %}
+                    </form>
                     {% include "tags.html" %}
                 </div>
             </div>
