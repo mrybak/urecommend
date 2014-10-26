@@ -140,13 +140,15 @@ var db = (function() {
     user - user id (hash string)
     tag - tag (string)
     */
-    function addUserTag(user, tag) {
+    function addUserTag(user, tag, onComplete) {
+        onComplete = onComplete !== undefined ? onComplete : function() {};
+
         ref.child('users/' + user).once('value', function(snap) {
             var tags = snap.child('tags').val();
             tags = (tags === null ? [] : tags);
             if (tags.indexOf(tag) === -1) {
                 tags.push(tag);
-                snap.ref().update({tags: tags});
+                snap.ref().update({tags: tags}, onComplete);
             }
         });
     }
