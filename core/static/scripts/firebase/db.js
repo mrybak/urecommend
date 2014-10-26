@@ -135,6 +135,17 @@ var db = (function() {
         });
     }
 
+    function addUserTag(user, tag) {
+        ref.child('users/' + user).once('value', function(snap) {
+            var tags = snap.child('tags').val();
+            console.log(tags.indexOf(tag));
+            if (tags.indexOf(tag) === -1) {
+                tags.push(tag);
+                snap.ref().update({tags: tags});
+            }
+        });
+    }
+
     /*
     user - user id (string)
     question - question (string)
@@ -209,6 +220,7 @@ var db = (function() {
         getRandomQuestions: getRandomQuestions,
         getAllTags: getAllTags,
         getUserTags: getUserTags,
+        addUserTag: addUserTag,
         addQuestion: addQuestion,
         answerQuestion: answerQuestion,
         acceptAnswer: acceptAnswer,
