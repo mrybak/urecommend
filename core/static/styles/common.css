@@ -109,6 +109,17 @@ html {
 .masthead-nav li a {
     font-size: 16px;
     font-weight: 300;
+    padding: 5px 10px;
+}
+
+.masthead-nav li.active a {
+    background: #4f986d;
+    color: #fff;
+    font-weight: 400;
+    border-radius: 5px;
+}
+.masthead-nav li.active a .glyphicon {
+    color: #fff !important;
 }
 
 .masthead-nav li a .glyphicon {

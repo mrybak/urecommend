@@ -108,7 +108,7 @@ function AppViewModel() {
         self.questionText("");
         self.questionTags("");
 
-        self.goToDashboard();
+        self.goToNotifications();
     };
 
     self.sendTag = function () {
