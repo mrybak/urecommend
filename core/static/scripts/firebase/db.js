@@ -143,7 +143,8 @@ var db = (function() {
     function addUserTag(user, tag) {
         ref.child('users/' + user).once('value', function(snap) {
             var tags = snap.child('tags').val();
-            if (tags === null || tags.indexOf(tag) === -1) {
+            tags = (tags === null ? [] : tags);
+            if (tags.indexOf(tag) === -1) {
                 tags.push(tag);
                 snap.ref().update({tags: tags});
             }
