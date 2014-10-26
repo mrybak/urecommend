@@ -87,16 +87,45 @@ var db = (function() {
         getQuestions(callback, {user: user});
     }
 
+    function updateTags(tags) {
+        var tagsRef = ref.child('tags');
+
+        tagsRef.once('value', function(snap) {
+            snap.forEach(function(tagSnap) {
+                var index = tags.indexOf(tagSnap.val());
+                if (index !== -1) {
+                    tags.splice(index, 1);
+                }
+            });
+
+            for (var i = 0; i < tags.length; i++)
+                tagsRef.push(tags[i]);
+        });
+    }
+
+    function getAllTags(callback) {
+        var Tags = [];
+        ref.child('tags').once('value', function(snap) {
+            snap.forEach(function (tagSnap) {
+                Tags.push(tagSnap.val());
+            });
+            callback(Tags);
+        });
+    }
+
     /*
     user - user id (string)
     question - question (string)
     */
-    function addQuestion(user, question) {
+    function addQuestion(user, question, tags) {
         var tRef = qRef.push();
         tRef.setWithPriority({
             user: user,
             question: question,
+            tags: tags
         }, user);
+
+        updateTags(tags);
     }
 
     /* 
@@ -156,6 +185,7 @@ var db = (function() {
         getQuestions: getQuestions,
         getUserQuestions: getUserQuestions,
         getRandomQuestions: getRandomQuestions,
+        getAllTags: getAllTags,
         addQuestion: addQuestion,
         answerQuestion: answerQuestion,
         acceptAnswer: acceptAnswer,
