@@ -128,9 +128,10 @@ var db = (function() {
     }
 
     function getUserTags(user, callback) {
-        var Tags = [];
         ref.child('users/' + user).once('value', function(snap) {
-            callback(snap.child('tags').val());
+            var Tags = snap.child('tags').val();
+            Tags = (Tags === null ? [] : Tags);
+            callback(Tags);
         });
     }
 
