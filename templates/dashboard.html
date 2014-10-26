@@ -1,10 +1,5 @@
 {% load bootstrap3 %}
 
-<h1 class="main">
-    this is my dahsboard
-</h1>
-
-
 <div class="buttons">
     {% buttons %}
         <button type="button" data-bind="click: goToQuestionForm" class="btn btn-primary btn-with-load-indicator">
@@ -12,17 +7,6 @@
         </button>
     {% endbuttons %}
 </div>
-
-<h2 data-bind="visible: unansweredQuestionsCount() > 0">
-    Your unanswered questions (<span data-bind="text: unansweredQuestionsCount()"></span>)
-</h2>
-<h2 data-bind="visible: unansweredQuestionsCount() == 0">NO unanswered QUESSSSTIONS
-</h2>
-<ul data-bind="foreach: userQuestions">
-    <li data-bind="visible: isUnanswered()">
-        <span data-bind="text: questionText"></span>
-    </li>
-</ul>
 
 <h2>
     recommend someone something:

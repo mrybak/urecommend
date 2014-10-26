@@ -143,3 +143,13 @@ html {
 .btn-skip:hover, .btn-skip:focus {
     background: #c53e3e !important;
 }
+
+.unseen {
+    background: #f4bab4;
+}
+.unaccepted {
+    background: #f4eea9;
+}
+.archived {
+    background: #eee9f3;
+}

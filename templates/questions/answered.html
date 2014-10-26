@@ -1,8 +1,4 @@
-{% load bootstrap3 %}
-
-<h1 class="main">
-    this is my NOTIFIIIIIIII
-</h1>
+<h2 class="main">Answered</h2>
 
 <h2 data-bind="visible: unreadNotificationsCount() > 0">
     New answers (<span data-bind="text: unreadNotificationsCount()"></span>)
@@ -13,8 +9,9 @@ UNSEEN:
     <li data-bind="visible: hasUnreadAnswers()">
         <strong><span data-bind="text: questionText"></span></strong>
         <ul data-bind="foreach: answers">
-            <li data-bind="visible: !seen()">
-                <span data-bind="text: user"></span>: <span data-bind="text: text"></span> <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
+            <li data-bind="visible: !seen()" class="unseen">
+                <span data-bind="text: user"></span>: <span data-bind="text: text"></span>
+                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
             </li>
         </ul>
     </li>
@@ -24,15 +21,16 @@ SEEN:
     <li data-bind="visible: hasSeenAnswers() && !isAccepted()">
         <strong><span data-bind="text: questionText"></span></strong>
         <ul data-bind="foreach: answers">
-            <li data-bind="visible: seen()">
-                <span data-bind="text: user"></span>: <span data-bind="text: text"> </span> <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
+            <li data-bind="visible: seen()" class="unaccepted">
+                <span data-bind="text: user"></span>: <span data-bind="text: text"> </span>
+                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
             </li>
         </ul>
     </li>
 </ul>
 ACCEPTED:
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="visible: isAccepted()">
+    <li data-bind="visible: isAccepted()" class="archived">
         <strong><span data-bind="text: questionText"></span></strong>
         <ul data-bind="foreach: answers">
             <li data-bind="visible: $index() == $parent.acceptedAnswer()">

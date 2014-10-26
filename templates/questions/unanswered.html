@@ -1,0 +1,9 @@
+<h2 class="main">Unanswered (<span
+        data-bind="visible: unansweredQuestionsCount() > 0, text: unansweredQuestionsCount()"></span>)</h2>
+
+<h2 data-bind="visible: unansweredQuestionsCount() == 0">You have no unanswered questions.</h2>
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="visible: isUnanswered()">
+        <span data-bind="text: questionText"></span>
+    </li>
+</ul>
