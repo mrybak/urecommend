@@ -112,6 +112,9 @@ var db = (function() {
                         tagsFactor = TAGS_ALPHA_FACTOR / (matched + TAGS_ALPHA_FACTOR);
 
                         var factor = pointsFactor * tagsFactor;
+                        if (tagsFactor < 1.0)
+                            factor = 0;
+                        
                         if (DEBUG) {
                             console.log("prob", 1-(threshold*factor));
                             console.log("question", question.question);
