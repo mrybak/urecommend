@@ -1,13 +1,15 @@
 var db = (function() {
-    var ref = new Firebase('https://luminous-heat-6147.firebaseio.com/');
-    var qRef = ref.child('questions');
-    var nRef = ref.child('notifications');
+    var ref = new Firebase('https://luminous-heat-6147.firebaseio.com/'),
+        qRef = ref.child('questions'),
+        nRef = ref.child('notifications'),
+        uRef = ref.child('users');
 
     var ANONYMOUS = 'anonymous';
 
     function prepareParameters(params) {
         var defaultProperties = {
             'user': ANONYMOUS,
+            'skipuser': null,
             'threshold': 0.0
         };
 
@@ -29,8 +31,9 @@ var db = (function() {
 
         params = prepareParameters(params);
 
-        var user = params.user;
-        var threshold = params.threshold;
+        var user = params.user,
+            threshold = params.threshold,
+            skipuser = params.skipuser;
 
         var query;
         if (user === ANONYMOUS) {
@@ -39,27 +42,55 @@ var db = (function() {
             query = qRef.startAt(user).endAt(user);
         }
 
+        // query.once('value', function(snap) {
+        //     var Questions = [];
+        //     snap.forEach(function(elem) {
+        //         if (Math.random() > threshold) {
+        //             var quest = elem.val();
+        //             quest['id'] = elem.name();
+
+        //             Questions.push(quest);
+        //         }  
+        //     });
+        //     callback(Questions);
+        // })
+
         query.once('value', function(snap) {
-            var Questions = [];
-            snap.forEach(function(elem) {
-                if (Math.random() > threshold) {
-                    var quest = elem.val();
-                    quest['id'] = elem.name();
+            var Questions = [],
+                QuestionsNum = snap.numChildren(),
+                i = 0;
 
-                    Questions.push(quest);
-                }  
+
+            var localcb = function (question, factor) {
+                if (skipuser === null || question.user !== skipuser)
+                    if (Math.random() > threshold * factor) {
+                        Questions.push(question);
+                    }
+
+                if (++i >= QuestionsNum) {
+                    callback(Questions);
+                }
+            }
+
+            snap.forEach(function(questionSnap) {
+                uRef.child(questionSnap.val().user).once('value', function(userSnap) {
+                var points = userSnap.child('points').val(),
+                    factor = 1 / (points + 1);
+
+                    var question = questionSnap.val();
+                    question['id'] = questionSnap.name();
+                    localcb(question, factor);
+                });
             });
-            callback(Questions);
         });
-
-        
     }
 
     /*
     threshold - threshold (numeric)
+    skipuser - user id to skip (string)
     */
-    function getRandomQuestions(threshold, callback) {
-        getQuestions(callback, {threshold: threshold});
+    function getRandomQuestions(threshold, skipuser, callback) {
+        getQuestions(callback, {threshold: threshold, skipuser: skipuser});
     }
 
     /*
