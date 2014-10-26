@@ -1,53 +1,60 @@
 {% load bootstrap3 %}
 
 <div data-bind="foreach: questionsToAnswer">
-<div data-bind="visible: $root.currentQuestion() == $index()">
-<h1 class="main" data-bind="visible: $root.state() == $root.states.ANS_CHOICE || $root.state() == $root.states.ANS_INPUT ">
-    <label class="prefix text-muted">Recommend me:
-        <span id="question-body" data-bind="text: questionText"></span>
-    </label>
-</h1>
+    <div data-bind="visible: $root.currentQuestion() == $index()">
+        <h1 class="main"
+            data-bind="visible: $root.state() == $root.states.ANS_CHOICE || $root.state() == $root.states.ANS_INPUT ">
+            <label class="prefix text-muted">Recommend me:
+                <span id="question-body" data-bind="text: questionText"></span>
+            </label>
+        </h1>
 
-<div id="answer-form-wrapper" data-bind="visible: $root.state() == $root.states.ANS_INPUT">
-    <form id="answer-question-form" method="post">
-        {% csrf_token %}
+        <div id="answer-form-wrapper" data-bind="visible: $root.state() == $root.states.ANS_INPUT">
+            <form id="answer-question-form" method="post">
+                {% csrf_token %}
 
-        <label class="prefix">
-            I'd recommend <input type="text" name="answer" data-bind="value: $root.answerText" class="answer-input"/>
-        </label>
+                <label class="prefix">
+                    I'd recommend <input type="text" name="answer" placeholder="type and press Enter..."
+                                         data-bind="value: $root.answerText" class="answer-input"/>
+                </label>
 
-        <div class="buttons">
+                <div class="buttons">
+                    {% buttons %}
+                        <button type="submit" style="visibility: hidden"
+                                class="btn btn-primary btn-with-load-indicator">
+                            {% bootstrap_icon "ok-circle" %} send
+                        </button>
+                    {% endbuttons %}
+                </div>
+            </form>
+        </div>
+
+        <div class="buttons" id="question-choice-buttons" data-bind="visible: $root.state() == $root.states.ANS_CHOICE">
             {% buttons %}
-                <button type="submit" class="btn btn-primary btn-with-load-indicator">
-                    {% bootstrap_icon "ok-circle" %} send
+                <button type="button" data-bind="click: $root.showAnswerInput" class="btn btn-primary btn-i-answer">
+                    {% bootstrap_icon "ok-circle" %} answer
+                </button>
+                <button type="button" data-bind="click: $root.goToAnswerForm"
+                        class="btn btn-primary btn-skip btn-with-load-indicator">
+                    next
+                    {% bootstrap_icon "chevron-right" %}
                 </button>
             {% endbuttons %}
         </div>
-    </form>
-</div>
 
-<div class="buttons" id="question-choice-buttons" data-bind="visible: $root.state() == $root.states.ANS_CHOICE">
-    {% buttons %}
-        <button type="button" data-bind="click: $root.showAnswerInput" class="btn btn-primary btn-i-answer">
-            {% bootstrap_icon "ok-circle" %} answer
-        </button>
-        <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
-            next
-            {% bootstrap_icon "chevron-right" %}
-        </button>
-    {% endbuttons %}
-</div>
-
-<div class="buttons" id="answer-thanks" data-bind="visible: $root.state() == $root.states.ANS_SENT">
-    Thank you, big man. <br />
-    {% buttons %}
-        <button type="button" data-bind="click: $root.goToDashboard" class="btn btn-primary btn-i-answer">
-            {% bootstrap_icon "ok-circle" %} enough. go back to dashboard
-        </button>
-        <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-skip btn-with-load-indicator">
-            {% bootstrap_icon "chevron-right" %} next!
-        </button>
-    {% endbuttons %}
-</div>
-</div>
+        <div class="buttons" id="answer-thanks" data-bind="visible: $root.state() == $root.states.ANS_SENT">
+            <h2 class="main">
+                <label class="prefix">Thank you!</label>
+            </h2>
+            {% buttons %}
+                <button type="button" data-bind="click: $root.goToAnswerForm" class="btn btn-primary btn-i-answer">
+                    {% bootstrap_icon "repeat" %} continue answering
+                </button>
+                <button type="button" data-bind="click: $root.goToDashboard"
+                        class="btn btn-primary btn-skip btn-with-load-indicator">
+                    {% bootstrap_icon "home" %} back to dashboard
+                </button>
+            {% endbuttons %}
+        </div>
+    </div>
 </div>
