@@ -178,6 +178,10 @@ function AppViewModel() {
     };
 
     self.generateMoreQuestions = function () {
+            var icon = $(".btn-with-load-indicator").find(".glyphicon");
+            var oldClass = icon.attr("class");
+            icon.attr("class", "glyphicon glyphicon-refresh glyphicon-refresh-animate");
+
         db.getRandomQuestions(0.9, self.currentUser(), function (fetchedQuestions) {
             console.log("fetchedQuestions.length", fetchedQuestions.length)
             self.questionsNumber = fetchedQuestions.length;
@@ -187,6 +191,10 @@ function AppViewModel() {
             });
             self.questionsToAnswer([]);
             ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
+
+
+            var icon = $(".btn-with-load-indicator").find(".glyphicon");
+            icon.attr("class", oldClass);
         });
     }
 
