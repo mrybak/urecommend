@@ -109,7 +109,7 @@ function AppViewModel() {
     };
 
     self.sendTag = function () {
-        db.addUserTag(self.currentUser(), self.tagText(), self.goToTags);
+        db.addUserTag(self.currentUser(), self.tagText(), function() { self.tagText(""); self.goToTags() });
     };
 
     function updateQuestionsList(stateToProceedTo) {
