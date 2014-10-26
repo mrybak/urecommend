@@ -1,0 +1,22 @@
+{% load bootstrap3 %}
+
+<h2 class="main">Newest questions</h2>
+
+<ul data-bind="foreach: userQuestions">{% comment %} TODO: fix {% endcomment %}
+    <li>
+        <span data-bind="text: questionText"></span>
+    </li>
+</ul>
+<a href="#" class="dashboard-link" data-bind="click: goToNotifications">more...</a>
+
+<form id="go-to-questions-list-form">
+    {% csrf_token %}
+
+    <div class="buttons">
+        {% buttons %}
+            <button type="submit" data-bind="click: goToAnswerForm" class="btn btn-primary btn-i-answer">
+                {% bootstrap_icon "chevron-left" %} answer questions
+            </button>
+        {% endbuttons %}
+    </div>
+</form>

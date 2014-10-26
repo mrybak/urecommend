@@ -1,0 +1,18 @@
+{% load bootstrap3 %}
+
+<h2 class="main">My questions</h2>
+
+<ul data-bind="foreach: userQuestions">
+    <li>
+        <span data-bind="text: questionText"></span>
+    </li>
+</ul>
+
+<div class="buttons">
+    {% buttons %}
+        <button type="button" data-bind="click: goToQuestionForm" class="btn btn-primary btn-with-load-indicator">
+            {% bootstrap_icon "plus" %} add new question
+        </button>
+    {% endbuttons %}
+</div>
+

@@ -1,24 +1,10 @@
 {% load bootstrap3 %}
 
-<div class="buttons">
-    {% buttons %}
-        <button type="button" data-bind="click: goToQuestionForm" class="btn btn-primary btn-with-load-indicator">
-            {% bootstrap_icon "plus" %} ask question
-        </button>
-    {% endbuttons %}
-</div>
-
-<h2>
-    recommend someone something:
-</h2>
-<form id="go-to-questions-list-form">
-    {% csrf_token %}
-
-    <div class="buttons">
-        {% buttons %}
-            <button type="submit" data-bind="click: goToAnswerForm" class="btn btn-primary btn-i-answer">
-                {% bootstrap_icon "chevron-left" %} start recommending
-            </button>
-        {% endbuttons %}
+<div class="row">
+    <div class="col-lg-6">
+        {% include 'dashboard/my-questions.html' %}
     </div>
-</form>
+    <div class="col-lg-6">
+        {% include 'dashboard/last-questions.html' %}
+    </div>
+</div>
