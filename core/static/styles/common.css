@@ -84,12 +84,26 @@ html {
     padding: 7px 15px 10px 15px !important;
 }
 
+.btn-primary.small {
+    margin: 0;
+    font-size: 15px !important;
+    padding: 3px 7px 5px 7px !important;
+}
+
+.btn-primary.small .glyphicon {
+    font-size: 11px;
+}
+
 .btn-primary:hover, .btn-primary:focus {
     background: #56945e !important;
 }
 
 .btn-primary .glyphicon {
     font-size: 20px;
+}
+
+.masthead-nav li {
+    border-bottom: none;
 }
 
 .masthead-nav li a {
@@ -130,6 +144,7 @@ html {
     font-size: 24px;
     min-width: 350px;
 }
+
 .prefix.small {
     font-size: 28px;
 }
@@ -155,24 +170,36 @@ html {
 }
 
 .unseen {
-    background: #f4bab4;
+    border-left: 8px solid #f4bab4;
+    margin: 10px 0;
+    border-bottom: none;
+    color: #999;
 }
 
 .unaccepted {
-    background: #f4eea9;
+    border-left: 8px solid #f4eea9;
+    margin: 10px 0;
+    border-bottom: none;
+    color: #999;
 }
 
 .archived {
-    background: #eee9f3;
+    border-left: 8px solid #eee9f3;
+    margin: 10px 0;
+    border-bottom: none;
+    color: #999;
 }
 
 ul {
     font-size: 24px;
     list-style: none;
+    text-align: left;
+    padding-left: 28%;
 }
 
 ul li {
     padding: 10px 20px;
+    border-bottom: 1px solid #ececec;
 }
 
 .tag-wrapper {
@@ -191,4 +218,42 @@ ul li {
     position: absolute;
     right: 2px;
     bottom: 1px;
+}
+
+.answers-list {
+    padding-left: 0;
+}
+
+.legend {
+    padding: 5px 0;
+    width: 100%;
+    display: block;
+    text-align: right;
+}
+
+.legend span {
+    color: #222;
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+.legend-unseen {
+    background: #f4bab4;
+}
+
+.legend-unaccepted {
+    background: #f4eea9;
+}
+
+.legend-archived {
+    background: #eee9f3;
+}
+
+.answer-accepted-button,
+.answer-accepted-button:hover,
+.answer-accepted-button:focus {
+    background: #fff !important;
+    cursor: default;
+    color: green;
+    outline: none;
 }

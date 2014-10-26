@@ -1,41 +1,49 @@
-<h2 class="main">Answered</h2>
+{% load bootstrap3 %}
 
-<h2 data-bind="visible: unreadNotificationsCount() > 0">
-    New answers (<span data-bind="text: unreadNotificationsCount()"></span>)
-</h2>
-<h2 data-bind="visible: unreadNotificationsCount() == 0">No new answers</h2>
-UNSEEN:
+<h2 class="main">Answered</h2>
+<span class="legend pull-right">Legend:
+    <span class="legend-unseen">new</span>
+    <span class="legend-unaccepted">not rated</span>
+    <span class="legend-archived">accepted</span>
+</span>
+
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: hasUnreadAnswers()">
-        <strong><span data-bind="text: questionText"></span></strong>
-        <ul data-bind="foreach: answers">
-            <li data-bind="visible: !seen()" class="unseen">
-                <span data-bind="text: user"></span>: <span data-bind="text: text"></span>
-                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
+        <div class="question-name" data-bind="text: questionText"></div>
+        <ul class="answers-list" data-bind="foreach: answers">
+            <li class="unseen" data-bind="visible: !seen()">
+                <span class="answer-text" data-bind="text: text"></span>
+                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())" class="btn btn-primary small answer-accept-button">
+                    {% bootstrap_icon "ok-circle" %} accept
+                </button>
             </li>
         </ul>
     </li>
 </ul>
-SEEN:
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: hasSeenAnswers() && !isAccepted()">
-        <strong><span data-bind="text: questionText"></span></strong>
-        <ul data-bind="foreach: answers">
-            <li data-bind="visible: seen()" class="unaccepted">
-                <span data-bind="text: user"></span>: <span data-bind="text: text"> </span>
-                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
+        <div class="question-name" data-bind="text: questionText"></div>
+        <ul class="answers-list" data-bind="foreach: answers">
+            <li class="unaccepted" data-bind="visible: seen()">
+                <span class="answer-text" data-bind="text: text"></span>
+                <button data-bind="click: setAnswerAsAccepted.bind($data, $index())" class="btn btn-primary small answer-accept-button">
+                    {% bootstrap_icon "ok-circle" %} accept
+                </button>
             </li>
         </ul>
     </li>
 </ul>
-ACCEPTED:
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="visible: isAccepted()" class="archived">
-        <strong><span data-bind="text: questionText"></span></strong>
-        <ul data-bind="foreach: answers">
-            <li data-bind="visible: $index() == $parent.acceptedAnswer()">
-                Best answer: <span data-bind="text: text"> </span>
+    <li data-bind="visible: isAccepted()">
+        <div class="question-name" data-bind="text: questionText"></div>
+        <ul class="answers-list" data-bind="foreach: answers">
+            <li class="archived" data-bind="visible: $index() == $parent.acceptedAnswer()">
+                <span class="answer-text" data-bind="text: text"></span>
+                <button class="btn btn-primary small answer-accepted-button">
+                    {% bootstrap_icon "ok-circle" %} accepted
+                </button>
             </li>
         </ul>
     </li>
 </ul>
+

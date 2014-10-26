@@ -103,7 +103,7 @@ function AppViewModel() {
     self.state = ko.observable(self.states.ASK);  // default
 
     self.sendQuestion = function () {
-        var tagList = self.questionTags().split(",").map(function(tag) { return tag.trim() });
+        var tagList = self.questionTags() == "" ? [] : self.questionTags().split(",").map(function(tag) { return tag.trim() });
         db.addQuestion(self.currentUser(), self.questionText(), tagList);
         self.questionText("");
         self.questionTags("");
