@@ -47,6 +47,12 @@ var Answer = function (user, text, seen, questionId) {
     };
 };
 
+var Tag = function(text) {
+    var self = this;
+
+    self.text = ko.observable(text);
+}
+
 function AppViewModel() {
 
     var self = this;
@@ -73,7 +79,8 @@ function AppViewModel() {
         ANS_CHOICE: "ANSWER_CHOICE", /* displays random question and you decide if you answer or not */
         ANS_INPUT: "ANSWER_INPUT", /* displays form that lets you send answer to question */
         ANS_SENT: "ANSWER_SENT", /* displays "thank you" for answering and lets you decide on how to continue */
-        NOTIF_LIST: "NOTIFICATIONS LIST" /* displays list of new answers to questions */
+        NOTIF_LIST: "NOTIFICATIONS LIST", /* displays list of new answers to questions */
+        TAGS: "TAGS" /* displays list of new user tags*/
     };
 
     self.userQuestions = ko.observableArray();
@@ -89,6 +96,8 @@ function AppViewModel() {
     self.currentQuestion = ko.observable(-1);
     self.questionsNumber = 0;
     self.answerText = ko.observable();
+    self.userTags = ko.observableArray();
+    self.tagText = ko.observable();
 
     self.state = ko.observable(self.states.ASK);  // default
 
@@ -97,6 +106,10 @@ function AppViewModel() {
         self.questionText("");
 
         self.goToDashboard();
+    };
+
+    self.sendTag = function () {
+        db.addUserTag(self.currentUser(), self.tagText(), self.goToTags);
     };
 
     function updateQuestionsList(stateToProceedTo) {
@@ -130,6 +143,20 @@ function AppViewModel() {
 
     self.goToDashboard = function () {
         updateQuestionsList(self.states.DASH);
+    };
+
+    self.goToTags = function () {
+        db.getUserTags(self.currentUser(), function (fetchedQuestions) {
+                var mappedQuestions = fetchedQuestions.map(function (t) {
+                    return new Tag(t);
+                });
+                self.userTags([]);
+                ko.utils.arrayPushAll(self.userTags, mappedQuestions);
+
+                console.log(mappedQuestions);
+
+                self.state(self.states.TAGS);
+            })
     };
 
     self.goToNotifications = function () {

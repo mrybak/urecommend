@@ -1,0 +1,11 @@
+{% load bootstrap3 %}
+
+<h1 class="main">
+    MY TAGS
+</h1>
+
+<ul data-bind="foreach: userTags">
+    <li>
+        <span data-bind="text: text"></span>
+    </li>
+</ul>

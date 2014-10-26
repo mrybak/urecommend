@@ -1,0 +1,14 @@
+{% load bootstrap3 %}
+
+<h1 class="main">
+    <label class="prefix">Add tag:
+        <input type="text" name="tag" data-bind="value: tagText" placeholder="type and press Enter..." class="tag-input"/>
+    </label>
+</h1>
+<div class="buttons">
+    {% buttons %}
+        <button type="submit" style="visibility: hidden" class="btn btn-primary btn-with-load-indicator">
+            {% bootstrap_icon "ok-circle" %} send
+        </button>
+    {% endbuttons %}
+</div>

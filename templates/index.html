@@ -15,6 +15,7 @@
                     <h3 class="masthead-brand" data-bind="click: goToDashboard">RecommendMe</h3>
                     <ul class="nav masthead-nav">
                         <li><a href="#" data-bind="click: goToDashboard">{% bootstrap_icon "home" %}  Dashboard</a></li>
+                        <li><a href="#" data-bind="click: goToTags">{% bootstrap_icon "home" %}  My tags</a></li>
                         <li><a href="#" data-bind="click: goToNotifications" id="notifications-link">{% bootstrap_icon "bell" %}  My questions
                             <span class="notification-count" data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a>
                         </li>
@@ -50,6 +51,19 @@
             <div class="notifications-container fullscreen" data-bind="visible: state() == states.NOTIF_LIST">
                 <div class="fullscreen-inner">
                     {% include "user-questions.html" %}
+                </div>
+            </div>
+
+            <div class="tags-container fullscreen" data-bind="visible: state() == states.TAGS">
+                <div class="fullscreen-inner">
+                        <form id="add-tag-form" method="post" data-bind="submit: sendTag">
+                            {% csrf_token %}
+
+                            {% include "forms/tag.html" %}
+                        </form>
+                </div>
+                <div class="fullscreen-inner">
+                    {% include "tags.html" %}
                 </div>
             </div>
 
