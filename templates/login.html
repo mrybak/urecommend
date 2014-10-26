@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load bootstrap3 %}
 
 {% block auth_check %}{% endblock %}
 
@@ -10,8 +11,14 @@
             <div class="cover-container">
 
                 <div class="inner cover">
-                    <h1 class="main">uRecommend</h1>
-                    <button class="btn" id="login-btn">Login</button>
+                    <h1 class="main slogan">let us help you choose!</h1>
+
+                    <div class="buttons">
+                        <button class="btn btn-primary" id="login-btn">
+                            log in with facebook
+                            {% bootstrap_icon "hand-right" %}
+                        </button>
+                    </div>
                 </div>
 
             </div>

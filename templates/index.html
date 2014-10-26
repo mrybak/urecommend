@@ -12,16 +12,15 @@
             <div class="cover-container">
 
                 <div class="masthead clearfix">
-                    <div class="inner">
-                        <h3 class="masthead-brand" data-bind="click: goToDashboard">uRecommend</h3>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="#" data-bind="click: goToDashboard">Home</a></li>
-                            <li><a href="#" data-bind="click: goToNotifications" id="notifications-link">Notifications <span
-                                    data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a></li>
-                            <li><a href="#" id="logout-link">Logout</a></li>
-                            <li data-bind="text: currentUser()"></li>
-                        </ul>
-                    </div>
+                    <h3 class="masthead-brand" data-bind="click: goToDashboard">uRecommend</h3>
+                    <ul class="nav masthead-nav">
+                        <li class="active"><a href="#" data-bind="click: goToDashboard">{% bootstrap_icon "chevron-right" %} Dashboard</a></li>
+                        <li><a href="#" data-bind="click: goToNotifications" id="notifications-link">{% bootstrap_icon "chevron-right" %} My questions
+                            <span class="notification-count" data-bind="visible: unreadNotificationsCount() > 0, text: unreadNotificationsCount()"></span></a>
+                        </li>
+                        <li><a href="#" id="logout-link">{% bootstrap_icon "chevron-right" %} Logout</a></li>
+                        <li data-bind="text: currentUser()"></li>
+                    </ul>
                 </div>
 
                 <div class="inner cover">
@@ -32,7 +31,8 @@
                             {% include "forms/question.html" %}
                         </form>
                     </div>
-                    <div class="qa-form answer" data-bind="visible: state() == states.ANS_CHOICE || state() == states.ANS_SENT || state() == states.ANS_INPUT">
+                    <div class="qa-form answer"
+                         data-bind="visible: state() == states.ANS_CHOICE || state() == states.ANS_SENT || state() == states.ANS_INPUT">
                         <form id="answer-question-form" method="post" data-bind="submit: sendAnswer">
                             {% csrf_token %}
 

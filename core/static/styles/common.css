@@ -1,5 +1,5 @@
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 html {
@@ -9,12 +9,20 @@ html {
 .site-wrapper {
     background: #fefefe;
 }
+
 .site-wrapper.with-bg {
-    background: #ddcf00;
+    background: url(../images/bg.jpg) no-repeat center center;
 }
 
 .masthead-brand:hover {
     cursor: pointer;
+}
+
+.masthead {
+    background: #fff;
+    border-bottom: 1px solid #ededed;
+    padding: 10px;
+    z-index: 10;
 }
 
 .fullscreen {
@@ -45,4 +53,25 @@ html {
     width: 15px;
     height: 14px;
     border-radius: 7px;
+}
+
+.main.slogan {
+    font-size: 72px;
+    color: #fff;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background: #234431;
+    font-size: 24px !important;
+    border: 1px solid #fff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background: #356649 !important;
+}
+
+.btn-primary .glyphicon {
+    font-size: 20px;
 }
