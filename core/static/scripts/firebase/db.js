@@ -73,6 +73,7 @@ var db = (function() {
             }
 
             snap.forEach(function(questionSnap) {
+                console.log(questionSnap.val());
                 uRef.child(questionSnap.val().user).once('value', function(userSnap) {
                 var points = userSnap.child('points').val(),
                     factor = 1 / (points + 1);
@@ -128,7 +129,7 @@ var db = (function() {
 
     function getUserTags(user, callback) {
         var Tags = [];
-        ref.child('user/' + user).once('value', function(snap) {
+        ref.child('users/' + user).once('value', function(snap) {
             callback(snap.child('tags').val());
         });
     }
@@ -206,6 +207,7 @@ var db = (function() {
         getUserQuestions: getUserQuestions,
         getRandomQuestions: getRandomQuestions,
         getAllTags: getAllTags,
+        getUserTags: getUserTags,
         addQuestion: addQuestion,
         answerQuestion: answerQuestion,
         acceptAnswer: acceptAnswer,
