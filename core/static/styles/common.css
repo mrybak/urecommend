@@ -51,8 +51,9 @@ html {
     position: absolute;
     top: 6px;
     right: -13px;
-    background: red;
+    background: #c53e3e;
     font-size: 10px;
+    font-weight: 400;
     color: #fff;
     text-align: center;
     width: 15px;
@@ -114,7 +115,7 @@ html {
     color: rgba(86, 82, 87, 0.30);
 }
 
-.question-input {
+.question-input, .answer-input {
     border-width: 0;
     outline: 0;
     border-bottom: 3px dashed rgba(53, 87, 54, 0.3);
