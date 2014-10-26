@@ -14,6 +14,11 @@ html {
     background: url(../images/bg.jpg) no-repeat center center;
 }
 
+.masthead-brand {
+    font-weight: 300;
+
+}
+
 .masthead-brand:hover {
     cursor: pointer;
 }
@@ -42,7 +47,7 @@ html {
     position: relative;
 }
 
-#notifications-link span {
+#notifications-link .notification-count {
     position: absolute;
     top: 6px;
     right: -13px;
@@ -74,4 +79,18 @@ html {
 
 .btn-primary .glyphicon {
     font-size: 20px;
+}
+
+.masthead-nav li a {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.masthead-nav li a .glyphicon {
+    font-size: 14px;
+    color: #356649 !important;
+}
+
+.masthead-nav li a:hover {
+    border-bottom: 1px solid #4f986d;
 }
