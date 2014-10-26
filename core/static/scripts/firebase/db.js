@@ -7,12 +7,14 @@ var db = (function() {
     var ANONYMOUS = 'anonymous';
     var POINTS_ALPHA_FACTOR = 40;
     var TAGS_ALPHA_FACTOR = 0.3;
+    var DEBUG = false;
 
     function prepareParameters(params) {
         var defaultProperties = {
             'user': ANONYMOUS,
             'skipuser': null,
-            'threshold': 0.0
+            'threshold': 0.0,
+            'limit': -1
         };
 
         for (var property in defaultProperties) {
@@ -61,7 +63,8 @@ var db = (function() {
 
         var user = params.user,
             threshold = params.threshold,
-            skipuser = params.skipuser;
+            skipuser = params.skipuser,
+            limit = params.limit;
 
         var query;
         if (user === ANONYMOUS) {
@@ -69,6 +72,9 @@ var db = (function() {
         } else {
             query = qRef.startAt(user).endAt(user);
         }
+
+        if (limit !== -1)
+            query = query.limit(limit);
 
         query.once('value', function(snap) {
             var Questions = [],
@@ -90,7 +96,6 @@ var db = (function() {
             }
 
             snap.forEach(function(questionSnap) {
-                console.log(questionSnap.val());
                 uRef.child(questionSnap.val().user).once('value', function(aUserSnap) {
                 var points = aUserSnap.child('points').val(),
                     pointsFactor = POINTS_ALPHA_FACTOR / (points + POINTS_ALPHA_FACTOR);
@@ -107,8 +112,10 @@ var db = (function() {
                         tagsFactor = TAGS_ALPHA_FACTOR / (matched + TAGS_ALPHA_FACTOR);
 
                         var factor = pointsFactor * tagsFactor;
-                        console.log("prob", 1-(threshold*factor));
-                        console.log("question", question.question);
+                        if (DEBUG) {
+                            console.log("prob", 1-(threshold*factor));
+                            console.log("question", question.question);
+                        }
                         localcb(question, factor);
                     });
                 });
@@ -124,6 +131,10 @@ var db = (function() {
         getQuestions(callback, {threshold: threshold, skipuser: skipuser});
     }
 
+
+    function getAllQuestions(callback, limit) {
+        getQuestions(callback, {limit: limit});
+    }
     /*
     user - user id (string)
     */
@@ -261,6 +272,7 @@ var db = (function() {
         getRandomQuestions: getRandomQuestions,
         getAllTags: getAllTags,
         getUserTags: getUserTags,
+        getAllQuestions: getAllQuestions,
         addUserTag: addUserTag,
         addUserTags: addUserTags,
         addQuestion: addQuestion,

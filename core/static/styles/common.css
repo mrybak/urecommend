@@ -32,7 +32,7 @@ html {
 
 .fullscreen {
     min-height: 100%;
-    top: 76px;
+    top: 100px;
     left: 0;
     position: absolute;
     width: 100%;
