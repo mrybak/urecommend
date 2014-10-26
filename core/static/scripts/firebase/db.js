@@ -5,6 +5,7 @@ var db = (function() {
         uRef = ref.child('users');
 
     var ANONYMOUS = 'anonymous';
+    var ALPHA_FACTOR = 20;
 
     function prepareParameters(params) {
         var defaultProperties = {
@@ -76,7 +77,7 @@ var db = (function() {
                 console.log(questionSnap.val());
                 uRef.child(questionSnap.val().user).once('value', function(userSnap) {
                 var points = userSnap.child('points').val(),
-                    factor = 1 / (points + 1);
+                    factor = ALPHA_FACTOR / (points + ALPHA_FACTOR);
 
                     var question = questionSnap.val();
                     question['id'] = questionSnap.name();
@@ -135,11 +136,14 @@ var db = (function() {
         });
     }
 
+    /*
+    user - user id (hash string)
+    tag - tag (string)
+    */
     function addUserTag(user, tag) {
         ref.child('users/' + user).once('value', function(snap) {
             var tags = snap.child('tags').val();
-            console.log(tags.indexOf(tag));
-            if (tags.indexOf(tag) === -1) {
+            if (tags === null || tags.indexOf(tag) === -1) {
                 tags.push(tag);
                 snap.ref().update({tags: tags});
             }
