@@ -8,16 +8,36 @@
     New answers (<span data-bind="text: unreadNotificationsCount()"></span>)
 </h2>
 <h2 data-bind="visible: unreadNotificationsCount() == 0">No new answers</h2>
+UNSEEN:
 <ul data-bind="foreach: userQuestions">
-{#    <li data-bind="text: ko.toJSON($data)"></li>#}
     <li data-bind="visible: hasUnreadAnswers()">
         <strong><span data-bind="text: questionText"></span></strong>
         <ul data-bind="foreach: answers">
-            <li>
-                <span data-bind="text: user"></span>: <span data-bind="text: text"></span>
+            <li data-bind="visible: !seen()">
+                <span data-bind="text: user"></span>: <span data-bind="text: text"></span> <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
             </li>
         </ul>
     </li>
 </ul>
-
-
+SEEN:
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="visible: hasSeenAnswers() && !isAccepted()">
+        <strong><span data-bind="text: questionText"></span></strong>
+        <ul data-bind="foreach: answers">
+            <li data-bind="visible: seen()">
+                <span data-bind="text: user"></span>: <span data-bind="text: text"> </span> <button data-bind="click: setAnswerAsAccepted.bind($data, $index())">Best answer</button>
+            </li>
+        </ul>
+    </li>
+</ul>
+ACCEPTED:
+<ul data-bind="foreach: userQuestions">
+    <li data-bind="visible: isAccepted()">
+        <strong><span data-bind="text: questionText"></span></strong>
+        <ul data-bind="foreach: answers">
+            <li data-bind="visible: $index() == $parent.acceptedAnswer()">
+                Best answer: <span data-bind="text: text"> </span>
+            </li>
+        </ul>
+    </li>
+</ul>

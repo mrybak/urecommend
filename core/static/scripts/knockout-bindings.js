@@ -1,31 +1,50 @@
-var Question = function (id, user, questionText, answers) {
+
+var model = new AppViewModel();
+
+var Question = function (id, user, questionText, answers, acceptedAnswer) {
     var self = this;
 
     self.id = ko.observable(id);
     self.user = ko.observable(user);
     self.questionText = ko.observable(questionText);
+    self.acceptedAnswer = ko.observable(acceptedAnswer);
 
     var mappedAnswers = answers.map(function (a) {
-        return new Answer(a.user, a.text, a.seen);
+        return new Answer(a.user, a.text, a.seen, self.id());
     });
     self.answers = ko.observableArray(mappedAnswers);
 
     self.isUnanswered = ko.computed(function () {
         return answers.length == 0
     });
-    self.hasUnreadAnswers = ko.computed(function () {
-        return answers.length > 0 && answers.filter(function (a) {
+    self.unreadAnswersCount = ko.computed(function() {
+        return answers.filter(function (a) {
             return !a.seen
-        }).length > 0
+        }).length;
+    });
+    self.hasUnreadAnswers = ko.computed(function () {
+        return self.unreadAnswersCount() > 0;
+    });
+    self.hasSeenAnswers = ko.computed(function () {
+        return (answers.length - self.unreadAnswersCount()) > 0;
+    });
+    self.isAccepted = ko.computed(function() {
+        return self.acceptedAnswer() != -1;
     });
 };
 
-var Answer = function (user, text, seen) {
+var Answer = function (user, text, seen, questionId) {
     var self = this;
 
     self.user = ko.observable(user);
     self.text = ko.observable(text);
     self.seen = ko.observable(seen);
+    self.questionId = ko.observable(questionId);
+
+    self.setAnswerAsAccepted = function(aId) {
+        db.acceptAnswer(self.questionId(), aId);
+        model.goToNotifications();
+    };
 };
 
 function AppViewModel() {
@@ -84,9 +103,17 @@ function AppViewModel() {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
             var mappedQuestions = fetchedQuestions.map(function (q) {
                 if (q.hasOwnProperty("answers")) {
-                    return new Question(q.id, q.user, q.question, q.answers)
+                    if (q.hasOwnProperty("acceptedAnswer")) {
+                        return new Question(q.id, q.user, q.question, q.answers, q.acceptedAnswer)
+                    } else {
+                        return new Question(q.id, q.user, q.question, q.answers, -1)
+                    }
                 } else {
-                    return new Question(q.id, q.user, q.question, [])
+                    if (q.hasOwnProperty("acceptedAnswer")) {
+                        return new Question(q.id, q.user, q.question, [], q.acceptedAnswer)
+                    } else {
+                        return new Question(q.id, q.user, q.question, [], -1)
+                    }
 
                 }
             });
@@ -119,7 +146,7 @@ function AppViewModel() {
             self.questionsNumber = 0;
         }
         if (self.currentQuestion() == -1) {
-            db.getRandomQuestions(0.5, function (fetchedQuestions) {
+            db.getRandomQuestions(0.5, null, function (fetchedQuestions) {
                 var mappedQuestions = fetchedQuestions.map(function (q) {
                     self.questionsNumber++;
                     return new Question(q.id, q.user, q.question, [])
@@ -146,5 +173,5 @@ function AppViewModel() {
 }
 
 $(function () {
-    ko.applyBindings(new AppViewModel());
+    ko.applyBindings(model);
 });
