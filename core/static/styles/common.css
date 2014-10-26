@@ -126,6 +126,14 @@ html {
     font-size: 44px;
 }
 
+.question-input.small {
+    font-size: 24px;
+    min-width: 350px;
+}
+.prefix.small {
+    font-size: 28px;
+}
+
 #question-body {
     padding: 5px 0;
     margin: 10px 10px 0 10px;

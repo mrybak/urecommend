@@ -92,6 +92,7 @@ function AppViewModel() {
     });
     self.unreadNotificationsCount = ko.observable(0);
     self.questionText = ko.observable();
+    self.questionTags = ko.observableArray();
     self.questionsToAnswer = ko.observableArray();
     self.currentQuestion = ko.observable(-1);
     self.questionsNumber = 0;
@@ -102,8 +103,10 @@ function AppViewModel() {
     self.state = ko.observable(self.states.ASK);  // default
 
     self.sendQuestion = function () {
-        db.addQuestion(self.currentUser(), self.questionText(), []);
+        var tagList = self.questionTags().split(",").map(function(tag) { return tag.trim() });
+        db.addQuestion(self.currentUser(), self.questionText(), tagList);
         self.questionText("");
+        self.questionTags("");
 
         self.goToDashboard();
     };
