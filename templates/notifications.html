@@ -9,8 +9,8 @@
 </h2>
 <h2 data-bind="visible: unreadNotificationsCount() == 0">No new answers</h2>
 <ul data-bind="foreach: userQuestions">
-    <li data-bind="text: ko.toJSON($data)"></li>
-    <li data-bind="visible: !isUnanswered() && hasNewAnswers()">
+{#    <li data-bind="text: ko.toJSON($data)"></li>#}
+    <li data-bind="visible: hasUnreadAnswers()">
         <strong><span data-bind="text: questionText"></span></strong>
         <ul data-bind="foreach: answers">
             <li>
