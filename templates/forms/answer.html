@@ -1,5 +1,10 @@
 {% load bootstrap3 %}
 
+<div data-bind="visible: currentQuestion() == questionsNumber">
+    <button type="button" data-bind="click: $root.generateMoreQuestions" class="btn btn-primary btn-i-answer">
+        {% bootstrap_icon "repeat" %} continue answering
+    </button>
+</div>
 <div data-bind="foreach: questionsToAnswer">
     <div data-bind="visible: $root.currentQuestion() == $index()">
         <h1 class="main"

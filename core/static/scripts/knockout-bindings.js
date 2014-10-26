@@ -177,22 +177,25 @@ function AppViewModel() {
         self.state(self.states.ASK);
     };
 
-    self.goToAnswerForm = function () {
-        if (self.currentQuestion() == self.questionsNumber - 1) {
-            self.currentQuestion(-1);
-            self.questionsNumber = 0;
-        }
-        if (self.currentQuestion() == -1) {
-            db.getRandomQuestions(0.5, self.currentUser(), function (fetchedQuestions) {
-                var mappedQuestions = fetchedQuestions.map(function (q) {
-                    self.questionsNumber++;
-                    return new Question(q.id, q.user, q.question, [])
-                });
-                self.questionsToAnswer([]);
-                ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
+    self.generateMoreQuestions = function () {
+        db.getRandomQuestions(0, self.currentUser(), function (fetchedQuestions) {
+            console.log("fetchedQuestions.length", fetchedQuestions.length)
+            self.questionsNumber = fetchedQuestions.length;
+            self.currentQuestion(0);
+            var mappedQuestions = fetchedQuestions.map(function (q) {
+                return new Question(q.id, q.user, q.question, [])
             });
+            self.questionsToAnswer([]);
+            ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
+        });
+    }
+
+    self.goToAnswerForm = function () {
+        if (self.currentQuestion() == -1) {
+            self.generateMoreQuestions();
+        } else {
+           self.currentQuestion(self.currentQuestion() + 1);
         }
-        self.currentQuestion(self.currentQuestion() + 1);
         self.state(self.states.ANS_CHOICE);
     };
 
