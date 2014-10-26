@@ -5,7 +5,7 @@ var db = (function() {
         uRef = ref.child('users');
 
     var ANONYMOUS = 'anonymous';
-    var POINTS_ALPHA_FACTOR = 20;
+    var POINTS_ALPHA_FACTOR = 40;
     var TAGS_ALPHA_FACTOR = 0.3;
 
     function prepareParameters(params) {
