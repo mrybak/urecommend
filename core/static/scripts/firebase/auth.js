@@ -3,7 +3,8 @@ var ref = new Firebase("https://luminous-heat-6147.firebaseio.com/");
 
 function prepareUser(userData) {
     var properties = {
-        'points': 0
+        'points': 0,
+        'tags': []
     };
 
     return $.extend({}, userData, properties);

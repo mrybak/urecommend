@@ -24,6 +24,18 @@ var db = (function() {
         return defaultProperties;
     }
 
+    function userAnswered(question, user) {
+        if (!question.hasOwnProperty('answers'))
+            return false;
+
+        var answers = question.answers;
+        for (var i = 0; i < answers.length; i++) {
+            if (answers[i].user === user)
+                return true;
+        }
+        return false;
+    }
+
     // this will be private soon
     function getQuestions(callback, params) {
         params = typeof params !== 'undefined' ? params : {};
@@ -49,7 +61,8 @@ var db = (function() {
 
 
             var localcb = function (question, factor) {
-                if (skipuser === null || question.user !== skipuser)
+                if (skipuser === null
+                || (question.user !== skipuser && !userAnswered(question, user)))
                     if (Math.random() > threshold * factor) {
                         Questions.push(question);
                     }

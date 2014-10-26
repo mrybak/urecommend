@@ -93,7 +93,7 @@ function AppViewModel() {
     self.state = ko.observable(self.states.ASK);  // default
 
     self.sendQuestion = function () {
-        db.addQuestion(self.currentUser(), self.questionText());
+        db.addQuestion(self.currentUser(), self.questionText(), []);
         self.questionText("");
 
         self.goToDashboard();
@@ -146,7 +146,7 @@ function AppViewModel() {
             self.questionsNumber = 0;
         }
         if (self.currentQuestion() == -1) {
-            db.getRandomQuestions(0.5, null, function (fetchedQuestions) {
+            db.getRandomQuestions(0.5, self.currentUser(), function (fetchedQuestions) {
                 var mappedQuestions = fetchedQuestions.map(function (q) {
                     self.questionsNumber++;
                     return new Question(q.id, q.user, q.question, [])
