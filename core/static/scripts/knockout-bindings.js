@@ -112,6 +112,13 @@ function AppViewModel() {
         db.addUserTag(self.currentUser(), self.tagText(), function() { self.tagText(""); self.goToTags() });
     };
 
+    self.removeTag = function(tag) {
+        console.log(tag);
+        self.userTags.remove(tag);
+        var tagListAsStringArray = self.userTags().map(function(x) { return x.text() });
+        db.addUserTags(self.currentUser(), tagListAsStringArray);
+    };
+
     function updateQuestionsList(stateToProceedTo) {
         db.getUserQuestions(self.currentUser(), function (fetchedQuestions) {
             var mappedQuestions = fetchedQuestions.map(function (q) {

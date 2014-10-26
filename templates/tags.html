@@ -1,11 +1,14 @@
 {% load bootstrap3 %}
 
 <h1 class="main">
-    MY TAGS
+    My tags
 </h1>
 
 <ul data-bind="foreach: userTags">
     <li>
         <span data-bind="text: text"></span>
+        <span style="color: #c53e3e;" data-bind="click: $root.removeTag">
+            {% bootstrap_icon "remove-sign" %}
+        </span>
     </li>
 </ul>
