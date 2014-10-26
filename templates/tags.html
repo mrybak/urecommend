@@ -4,11 +4,12 @@
     My tags
 </h1>
 
-<ul data-bind="foreach: userTags">
-    <li>
-        <span data-bind="text: text"></span>
-        <span style="color: #c53e3e;" data-bind="click: $root.removeTag">
-            {% bootstrap_icon "remove-sign" %}
+<div data-bind="foreach: userTags">
+    <span class="tag-wrapper">
+    <span data-bind="text: text"></span>
+        <span class="icon-inner" data-bind="click: $root.removeTag">
+            {% bootstrap_icon "remove" %}
         </span>
-    </li>
-</ul>
+
+    </span>
+</div>
