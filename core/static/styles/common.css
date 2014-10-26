@@ -94,3 +94,22 @@ html {
 .masthead-nav li a:hover {
     border-bottom: 1px solid #4f986d;
 }
+
+.prefix {
+    line-height: 50px;
+    font-size: 50px;
+}
+
+.question-input {
+    border-width: 0;
+    outline: 0;
+    border-bottom: 3px dashed rgba(53, 87, 54, 0.3);
+    padding: 5px 0;
+    margin: 10px 10px 0 10px;
+    color: #356649;
+    font-size: 44px;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: rgba(86, 82, 87, 0.30);
+}
