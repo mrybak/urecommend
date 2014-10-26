@@ -6,7 +6,7 @@ var db = (function() {
 
     var ANONYMOUS = 'anonymous';
     var POINTS_ALPHA_FACTOR = 20;
-    var TAGS_ALPHA_FACTOR = 1;
+    var TAGS_ALPHA_FACTOR = 0.5;
 
     function prepareParameters(params) {
         var defaultProperties = {
@@ -78,7 +78,7 @@ var db = (function() {
             var localcb = function (question, factor) {
                 if (!question.hasOwnProperty('acceptedAnswer'))
                     if (question.user !== skipuser)
-                        if (!userAnswered(question, user))
+                        if (!userAnswered(question, skipuser))
                             if (Math.random() > threshold * factor) {
                                 Questions.push(question);
                             }
