@@ -6,7 +6,7 @@ var db = (function() {
 
     var ANONYMOUS = 'anonymous';
     var POINTS_ALPHA_FACTOR = 20;
-    var TAGS_ALPHA_FACTOR = 0.5;
+    var TAGS_ALPHA_FACTOR = 0.3;
 
     function prepareParameters(params) {
         var defaultProperties = {
@@ -44,8 +44,9 @@ var db = (function() {
             return 0;
 
         var matched = 0;
+        t2 = t2.map(function(e) { return e.toLowerCase(); })
         for (var i = 0; i < t1.length; i++) {
-            if (t2.indexOf(t1[i]) !== -1)
+            if (t2.indexOf(t1[i].toLowerCase()) !== -1)
                 matched++;
         }
         return matched;
@@ -106,6 +107,8 @@ var db = (function() {
                         tagsFactor = TAGS_ALPHA_FACTOR / (matched + TAGS_ALPHA_FACTOR);
 
                         var factor = pointsFactor * tagsFactor;
+                        console.log("prob", 1-(threshold*factor));
+                        console.log("question", question.question);
                         localcb(question, factor);
                     });
                 });

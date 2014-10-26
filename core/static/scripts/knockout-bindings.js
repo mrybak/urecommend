@@ -178,7 +178,7 @@ function AppViewModel() {
     };
 
     self.generateMoreQuestions = function () {
-        db.getRandomQuestions(0, self.currentUser(), function (fetchedQuestions) {
+        db.getRandomQuestions(0.9, self.currentUser(), function (fetchedQuestions) {
             console.log("fetchedQuestions.length", fetchedQuestions.length)
             self.questionsNumber = fetchedQuestions.length;
             self.currentQuestion(0);
