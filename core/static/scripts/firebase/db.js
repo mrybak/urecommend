@@ -126,6 +126,13 @@ var db = (function() {
         });
     }
 
+    function getUserTags(user, callback) {
+        var Tags = [];
+        ref.child('user/' + user).once('value', function(snap) {
+            callback(snap.child('tags').val());
+        });
+    }
+
     /*
     user - user id (string)
     question - question (string)
