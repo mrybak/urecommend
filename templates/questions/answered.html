@@ -9,7 +9,7 @@
 
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: hasUnreadAnswers()">
-        <div class="question-name" data-bind="text: questionText"></div>
+        <div class="question-name with-question-mark" data-bind="text: questionText"></div>
         <ul class="answers-list" data-bind="foreach: answers">
             <li class="unseen" data-bind="visible: !seen()">
                 <span class="answer-text" data-bind="text: text"></span>
@@ -22,7 +22,7 @@
 </ul>
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: hasSeenAnswers() && !isAccepted()">
-        <div class="question-name" data-bind="text: questionText"></div>
+        <div class="question-name with-question-mark" data-bind="text: questionText"></div>
         <ul class="answers-list" data-bind="foreach: answers">
             <li class="unaccepted" data-bind="visible: seen()">
                 <span class="answer-text" data-bind="text: text"></span>
@@ -35,7 +35,7 @@
 </ul>
 <ul data-bind="foreach: userQuestions">
     <li data-bind="visible: isAccepted()">
-        <div class="question-name" data-bind="text: questionText"></div>
+        <div class="question-name with-question-mark" data-bind="text: questionText"></div>
         <ul class="answers-list" data-bind="foreach: answers">
             <li class="archived" data-bind="visible: $index() == $parent.acceptedAnswer()">
                 <span class="answer-text" data-bind="text: text"></span>

@@ -94,6 +94,7 @@ function AppViewModel() {
     self.questionText = ko.observable();
     self.questionTags = ko.observableArray();
     self.questionsToAnswer = ko.observableArray();
+    self.othersQuestions = ko.observableArray();
     self.currentQuestion = ko.observable(-1);
     self.questionsNumber = 0;
     self.answerText = ko.observable();
@@ -152,6 +153,14 @@ function AppViewModel() {
     }
 
     self.goToDashboard = function () {
+         db.getRandomQuestions(0.9, self.currentUser(), function (fetchedQuestions) {
+             var mappedQuestions = fetchedQuestions.map(function (q) {
+                    return new Question(q.id, q.user, q.question, [])
+                });
+                self.othersQuestions(mappedQuestions.slice(0,3));
+
+         });
+
         updateQuestionsList(self.states.DASH);
     };
 
@@ -192,11 +201,10 @@ function AppViewModel() {
             self.questionsToAnswer([]);
             ko.utils.arrayPushAll(self.questionsToAnswer, mappedQuestions);
 
-
             var icon = $(".btn-with-load-indicator").find(".glyphicon");
             icon.attr("class", oldClass);
         });
-    }
+    };
 
     self.goToAnswerForm = function () {
         if (self.currentQuestion() == -1) {

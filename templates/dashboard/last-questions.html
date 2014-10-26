@@ -1,10 +1,10 @@
 {% load bootstrap3 %}
 
-<h2 class="main">Newest questions</h2>
+<h2 class="main">Give back and help others!</h2>
 
-<ul data-bind="foreach: userQuestions">{% comment %} TODO: fix {% endcomment %}
+<ul data-bind="foreach: othersQuestions">{% comment %} TODO: fix {% endcomment %}
     <li>
-        <span data-bind="text: questionText"></span>
+        <span class="with-question-mark" data-bind="text: questionText"></span>
     </li>
 </ul>
 {#<a href="#" class="dashboard-link" data-bind="click: goToNotifications">more...</a>#}
